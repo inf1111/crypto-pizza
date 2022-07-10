@@ -3,13 +3,14 @@
 
     <div class="container">
         <div class="breadcrumbs">
-            <div class="breadcrumbs__item"> <a href="">Главная     </a></div>
+            {{--{{ Breadcrumbs::render('category', $category) }}--}}
+            <div class="breadcrumbs__item"> <a href="{{ route("home") }}">Главная</a></div>
             <div class="breadcrumbs__separator">—</div>
-            <div class="breadcrumbs__item"><span>Обзоры</span></div>
+            <div class="breadcrumbs__item"><span>{{ $category->name_rus }}</span></div>
         </div>
         <div class="columns module">
             <div class="columns--middle">
-                <h1 class="page-title">Обзоры</h1>
+                <h1 class="page-title">{{ $category->name_rus }}</h1>
                 <div class="mainInfo module">
                     <div class="cardFill themeOfTheDay"><a class="cardFill__link" href=""> <img class="cardFill__image" src="/images/upload/1.webp" alt=""/>
                             <div class="cardFill__frame">
@@ -60,12 +61,12 @@
 
                     @forelse ($posts as $post)
 
-                        <div class="newsCard module"><a class="newsCard__image" href="{{ route('post-show', [$category, $post->slug]) }}"><img src="/{{ $post->image }}" alt=""/></a>
+                        <div class="newsCard module"><a class="newsCard__image" href="{{ route('post-show', [$category->name, $post->slug]) }}"><img src="/{{ $post->image }}" alt=""/></a>
                             <div class="newsCard__content">
-                                <div class="newsCard__title"><a href="{{ route('post-show', [$category, $post->slug]) }}">{{ $post->title }}</a></div>
+                                <div class="newsCard__title"><a href="{{ route('post-show', [$category->name, $post->slug]) }}">{{ $post->title }}</a></div>
                                 <div class="newsCard__info">
-                                    <div class="newsCard__date">5 января 2022</div>
-                                    <div class="newsCard__category">Обзоры</div>
+                                    <div class="newsCard__date">{{ $post->date_formatted }}</div>
+                                    <div class="newsCard__category">{{ $post->category->name_rus }}</div>
                                     <div class="newsCard__comment">
                                         <svg class="icon icon-comment newsCard__commentIcon">
                                             <use xlink:href="/images/sprite.svg#comment"></use>
@@ -74,7 +75,7 @@
                                     </div>
                                 </div>
                                 <div class="newsCard__text">{{ $post->descr }}</div>
-                                <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="{{ route('post-show', [$category, $post->slug]) }}">Читать полностью </a>
+                                <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="{{ route('post-show', [$category->name, $post->slug]) }}">Читать полностью </a>
                                     <div class="newsCard__timeRead">
                                         <svg class="icon icon-time newsCard__timeReadIcon">
                                             <use xlink:href="/images/sprite.svg#time"></use>
@@ -91,7 +92,7 @@
 
                 </div>
 
-                {{$posts->links("paging")}}
+                {{ $posts->links("paging") }}
 
             </div>
             <aside class="sidebar">

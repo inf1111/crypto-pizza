@@ -1,14 +1,16 @@
 <?php
 
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
 Route::get('/', 'PostController@home')->name("home");
+Route::get('/search', 'PostController@search')->name("search");
 Route::get('/{category}', 'PostController@index')->name("cat-index");
 Route::get('/{category}/{slug}', 'PostController@show')->name("post-show");
 
+
 Route::post('/subscriber', 'SubscriberController@create')->name("subscriber-create");
+
 
 Route::get('/zzz', function () {
 

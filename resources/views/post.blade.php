@@ -11,11 +11,12 @@
 
     <div class="container">
         <div class="breadcrumbs">
-            <div class="breadcrumbs__item"> <a href="">Главная     </a></div>
+            {{--{{ Breadcrumbs::render('post-show', $post->category, $post) }}--}}
+            <div class="breadcrumbs__item"> <a href="{{ route("home") }}">Главная</a></div>
             <div class="breadcrumbs__separator">—</div>
-            <div class="breadcrumbs__item"><a href="">Расследования</a></div>
+            <div class="breadcrumbs__item"><a href="{{ route("cat-index", $post->category->name) }}">{{ $post->category->name_rus }}</a></div>
             <div class="breadcrumbs__separator">—</div>
-            <div class="breadcrumbs__item"><span>От CEO BitMEX до преступника в бегах: как Артур Хейс попал в розыск США? </span></div>
+            <div class="breadcrumbs__item"><span>{{ $post->title }}</span></div>
         </div>
         <div class="columns">
             <div class="share share--left">

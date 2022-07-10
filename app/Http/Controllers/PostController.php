@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Post;
+use Spatie\Searchable\Search;
 
 class PostController extends Controller
 {
-
 
     public function home()
     {
@@ -23,7 +23,7 @@ class PostController extends Controller
         $posts = Post::where('category_id', $category->id)->paginate(1);
 
         return view("category", [
-            'category' => $category->name,
+            'category' => $category,
             'posts' => $posts
         ]);
     }
@@ -38,4 +38,22 @@ class PostController extends Controller
             'post' => $post
         ]);
     }
+
+    public function search()
+    {
+
+        if (request()->has("q") && request()->q != "") {
+            $results = (new Search())
+                ->registerModel(Post::class, 'title', 'text')
+                ->search(request()->q);
+        }
+        else {
+            $results = collect([]);
+        }
+
+        return view("search", [
+            'results' => $results
+        ]);
+    }
+
 }
