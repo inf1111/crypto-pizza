@@ -18,10 +18,18 @@
             <div class="columns--middle">
                 <section class="search-box module">
                     <h1 class="search-box__title module__title">Поиск по запросу “{{ request()->q }}”</h1>
-                    <div class="search-box__result">По запросу “{{ request()->q }}” найдено {{ trans_choice("main.mentions_number", $results->count()) }}.</div>
+                    <div class="search-box__result">
+
+                        @if($total === 0)
+                            По запросу “{{ request()->q }}” не найдено упоминаний. Проверьте правильность вводимой фразы и повторите поиск.
+                        @else
+                            По запросу “{{ request()->q }}” найдено {{ trans_choice("main.mentions_number", $total) }}.
+                        @endif
+
+                    </div>
                     <form action="{{ route("search") }}" method="GET">
                         <div class="search-box__form">
-                            <input type="search" name="q" placeholder="Введите запрос для поиска">
+                            <input type="search" name="q" placeholder="Введите запрос для поиска" minlength="3" required>
                             <button type="submit">
                                 <svg class="icon icon-loop ">
                                     <use xlink:href="/images/sprite.svg#loop"></use>
@@ -58,12 +66,16 @@
                         </div>
 
                     @empty
-                        <h1>No results</h1>
+
+                        <div class="search-box__empty"> <img src="/images/pizza3.webp" alt="">
+                            <p>Нет результатов :(</p>
+                        </div>
+
                     @endforelse
 
                 </section>
 
-                {{--{{ $results->links("paging") }}--}}
+                {{ $results->appends(['q' => $q])->links("paging") }}
 
             </div>
             <aside class="sidebar">

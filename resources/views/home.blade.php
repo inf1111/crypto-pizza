@@ -555,100 +555,39 @@
         <div class="module module--big-space">
             <h2 class="h2 module__title">Образование</h2>
             <div class="two-columns module">
-                <div class="newsCard"><a class="newsCard__image" href=""><img src="./images/upload/2.webp" alt=""/></a>
-                    <div class="newsCard__content">
-                        <div class="newsCard__title"><a href="">EuroSwap EDEX презентовал команду и сразу перешел в основную фазу развития</a></div>
-                        <div class="newsCard__info">
-                            <div class="newsCard__date">5 января 2022</div>
-                            <div class="newsCard__category">Обзоры</div>
-                            <div class="newsCard__comment">
-                                <svg class="icon icon-comment newsCard__commentIcon">
-                                    <use xlink:href="./images/sprite.svg#comment"></use>
-                                </svg>
-                                <div class="newsCard__commentSize">25</div>
+
+                @forelse ($eduTopPosts as $eduPost)
+
+                    <div class="newsCard"><a class="newsCard__image" href="{{ route('post-show', [$eduPost->category->name, $eduPost->slug]) }}"><img src="/{{ $eduPost->image }}" alt=""/></a>
+                        <div class="newsCard__content">
+                            <div class="newsCard__title"><a href="{{ route('post-show', [$eduPost->category->name, $eduPost->slug]) }}">{{ $eduPost->title }}</a></div>
+                            <div class="newsCard__info">
+                                <div class="newsCard__date">{{ $eduPost->date_formatted }}</div>
+                                <div class="newsCard__category">{{ $eduPost->category->name_rus }}</div>
+                                <div class="newsCard__comment">
+                                    <svg class="icon icon-comment newsCard__commentIcon">
+                                        <use xlink:href="./images/sprite.svg#comment"></use>
+                                    </svg>
+                                    <div class="newsCard__commentSize">25</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="">Читать полностью </a>
-                            <div class="newsCard__timeRead">
-                                <svg class="icon icon-time newsCard__timeReadIcon">
-                                    <use xlink:href="./images/sprite.svg#time"></use>
-                                </svg>
-                                <div class="newsCard__timeReadText">Время на прочтение 15 мин.</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="newsCard"><a class="newsCard__image" href=""><img src="./images/upload/3.webp" alt=""/></a>
-                    <div class="newsCard__content">
-                        <div class="newsCard__title"><a href="">Смена тренда или ложный отскок: при каких условиях биткоин вырастет?</a></div>
-                        <div class="newsCard__info">
-                            <div class="newsCard__date">5 января 2022</div>
-                            <div class="newsCard__category">Обзоры</div>
-                            <div class="newsCard__comment">
-                                <svg class="icon icon-comment newsCard__commentIcon">
-                                    <use xlink:href="./images/sprite.svg#comment"></use>
-                                </svg>
-                                <div class="newsCard__commentSize">12</div>
-                            </div>
-                        </div>
-                        <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="">Читать полностью </a>
-                            <div class="newsCard__timeRead">
-                                <svg class="icon icon-time newsCard__timeReadIcon">
-                                    <use xlink:href="./images/sprite.svg#time"></use>
-                                </svg>
-                                <div class="newsCard__timeReadText">Время на прочтение 7 мин.</div>
+                            <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="{{ route('post-show', [$eduPost->category->name, $eduPost->slug]) }}">Читать полностью </a>
+                                <div class="newsCard__timeRead">
+                                    <svg class="icon icon-time newsCard__timeReadIcon">
+                                        <use xlink:href="./images/sprite.svg#time"></use>
+                                    </svg>
+                                    <div class="newsCard__timeReadText">Время на прочтение 15 мин.</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="newsCard"><a class="newsCard__image" href=""><img src="./images/upload/4.webp" alt=""/></a>
-                    <div class="newsCard__content">
-                        <div class="newsCard__title"><a href="">EuroSwap EDEX презентовал команду и сразу перешел в основную фазу развития</a></div>
-                        <div class="newsCard__info">
-                            <div class="newsCard__date">5 января 2022</div>
-                            <div class="newsCard__category">Обзоры</div>
-                            <div class="newsCard__comment hot">
-                                <svg class="icon icon-fire newsCard__commentIcon">
-                                    <use xlink:href="./images/sprite.svg#fire"></use>
-                                </svg>
-                                <div class="newsCard__commentSize">90</div>
-                            </div>
-                        </div>
-                        <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="">Читать полностью </a>
-                            <div class="newsCard__timeRead">
-                                <svg class="icon icon-time newsCard__timeReadIcon">
-                                    <use xlink:href="./images/sprite.svg#time"></use>
-                                </svg>
-                                <div class="newsCard__timeReadText">Время на прочтение 15 мин.</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="newsCard"><a class="newsCard__image" href=""><img src="./images/upload/5.webp" alt=""/></a>
-                    <div class="newsCard__content">
-                        <div class="newsCard__title"><a href="">Смена тренда или ложный отскок: при каких условиях биткоин вырастет?</a></div>
-                        <div class="newsCard__info">
-                            <div class="newsCard__date">5 января 2022</div>
-                            <div class="newsCard__category">Обзоры</div>
-                            <div class="newsCard__comment">
-                                <svg class="icon icon-comment newsCard__commentIcon">
-                                    <use xlink:href="./images/sprite.svg#comment"></use>
-                                </svg>
-                                <div class="newsCard__commentSize">12</div>
-                            </div>
-                        </div>
-                        <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="">Читать полностью </a>
-                            <div class="newsCard__timeRead">
-                                <svg class="icon icon-time newsCard__timeReadIcon">
-                                    <use xlink:href="./images/sprite.svg#time"></use>
-                                </svg>
-                                <div class="newsCard__timeReadText">Время на прочтение 7 мин.</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+                @empty
+                    <h1>No posts</h1>
+                @endforelse
+
             </div>
-            <div class="module__more"> <a class="module__more-link" href="">Перейти в рубрику
+            <div class="module__more"> <a class="module__more-link" href="{{ route("cat-index", ['education']) }}">Перейти в рубрику
                     <svg class="icon icon-rarr ">
                         <use xlink:href="./images/sprite.svg#rarr"></use>
                     </svg></a></div>
@@ -896,7 +835,7 @@
             <div class="tgLine__header"><img class="tgLine__headerIcon" src="./images/tgLine/tg.svg" alt="">
                 <div class="tgLine__headerText">Новости крипторынка у вас в телефоне</div>
             </div>
-            <div class="tgLine__content">Еще больше интересного в Telegram-канале. Только актуальные и важные новости и события.</div><a class="btn btn--black tgLine__button" href="">Перейти в канал </a>
+            <div class="tgLine__content">Еще больше интересного в Telegram-канале. Только актуальные и важные новости и события.</div><a class="btn btn--black tgLine__button" href="https://t.me/SIGEN_Media" target="_blank">Перейти в канал </a>
         </div>
         <div class="module module--big-space">
             <h2 class="h2 module__title">Возможно вы пропустили:</h2>

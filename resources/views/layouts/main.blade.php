@@ -39,6 +39,10 @@
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/main2.css">
     <script type="text/javascript" src="https://yastatic.net/jquery/2.1.3/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+
     <script>
 
         var config = {
@@ -79,8 +83,8 @@
                                     <use xlink:href="/images/sprite.svg#loop"></use>
                                 </svg>
                             </div>
-                            <form class="search__form" action="">
-                                <input type="search" name="" placeholder="Введите поисковый запрос">
+                            <form class="search__form" action="/search" method="GET">
+                                <input type="search" name="q" placeholder="Введите поисковый запрос" minlength="3" required>
                                 <button type="submit">
                                     <svg class="icon icon-loop ">
                                         <use xlink:href="/images/sprite.svg#loop"></use>
@@ -116,8 +120,8 @@
                                     <use xlink:href="/images/sprite.svg#loop"></use>
                                 </svg>
                             </div>
-                            <form class="search__form" action="">
-                                <input type="search" name="" placeholder="Введите поисковый запрос">
+                            <form class="search__form" action="/search" method="GET">
+                                <input type="search" name="q" placeholder="Введите поисковый запрос" minlength="3" required>
                                 <button type="submit">
                                     <svg class="icon icon-loop ">
                                         <use xlink:href="/images/sprite.svg#loop"></use>
@@ -548,5 +552,6 @@
         <use xlink:href="/images/sprite.svg#arrow-up"></use>
     </svg></a>
 <script src="/js/main2.js"></script>
+<script src="/js/modals.js"></script>
 </body>
 </html>
