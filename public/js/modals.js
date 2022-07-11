@@ -1,4 +1,6 @@
 
+///////////// All modals
+
 var lostPass = document.querySelector('.lost-pass');
 var more = document.querySelector('[data-modal="restore-1"] .btn');
 var register = document.querySelector('[data-modal="register"] .btn');
@@ -24,7 +26,7 @@ if (more) {
     });
 }
 
-if (register) {
+/*if (register) {
     register.addEventListener('click', function (e) {
         e.preventDefault();
         //(0,_modal_modal__WEBPACK_IMPORTED_MODULE_0__.modalRemove)();
@@ -32,7 +34,7 @@ if (register) {
         //(0,_modal_modal__WEBPACK_IMPORTED_MODULE_0__.modalAdd)('register-ok');
         modalAdd('register-ok');
     });
-}
+}*/
 
 if (loginAfterReg) {
     loginAfterReg.addEventListener('click', function (e) {
@@ -44,7 +46,7 @@ if (loginAfterReg) {
     });
 }
 
-/////////////////////////////////////
+//////
 
 var body = document.body;
 function overlayAdd() {
@@ -67,7 +69,7 @@ function overlayRemove() {
     body.classList.remove('is-animate', 'is-active');
 }
 
-/////////////////////////////////////
+//////
 
 function modalAdd(datamodal) {
     document.querySelector(".modal[data-modal=".concat(datamodal, "]")).classList.add('is-active');
@@ -100,7 +102,7 @@ document.addEventListener('click', function (e) {
     }
 });
 
-///////////// Enter
+///////////// Login
 
 $("#modal_enter_form").submit(function(e){
 
@@ -118,7 +120,7 @@ $("#modal_enter_form").submit(function(e){
         },
         beforeSend: function()
         {
-            $("#modal_enter_loading").css("display", "block");
+            $("#loading_circle").css("display", "block");
         },
         success: function(response)
         {
@@ -129,7 +131,7 @@ $("#modal_enter_form").submit(function(e){
                 $("#modal_enter_msg").html(response["error_msg"]);
             }
 
-            $("#modal_enter_loading").css("display", "none");
+            $("#loading_circle").css("display", "none");
         },
     });
 
@@ -137,6 +139,42 @@ $("#modal_enter_form").submit(function(e){
 
 ///////////// Register
 
-$( document ).ready(function() {
+/*$( document ).ready(function() {
     modalAdd('register');
+});*/
+
+$("#modal_register_form").submit(function(e){
+
+    e.preventDefault();
+
+    var email = $("#modal_register_inp_email").val();
+    var pass = $("#modal_register_inp_pass").val();
+    var passRepeat = $("#modal_register_inp_pass_repeat").val();
+
+    $.ajax({
+        type: 'POST',
+        url: config.routes.register,
+        data: {
+            email: email,
+            pass: pass,
+            passRepeat: passRepeat
+        },
+        beforeSend: function()
+        {
+            $("#loading_circle").css("display", "block");
+        },
+        success: function(response)
+        {
+            if (response["status"] == "ok") {
+                modalRemove();
+                modalAdd('register-ok');
+            }
+            else {
+                $("#modal_register_msg").html(response["error_msg"]);
+            }
+
+            $("#loading_circle").css("display", "none");
+        },
+    });
+
 });

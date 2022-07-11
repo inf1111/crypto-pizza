@@ -20,7 +20,7 @@ $("#home_subs_form").submit(function(e){
         },
         beforeSend: function()
         {
-            $("#home_subs_loading").css("display", "block");
+            $("#loading_circle").css("display", "block");
         },
         success: function(response)
         {
@@ -34,7 +34,7 @@ $("#home_subs_form").submit(function(e){
 
             $("#home_subs_msg").css("display", "block");
             $("#home_subs_input").val("");
-            $("#home_subs_loading").css("display", "none");
+            $("#loading_circle").css("display", "none");
         },
     });
 
@@ -53,8 +53,6 @@ $("#footer_subs_form").submit(function(e){
         return false;
     }
 
-    $("#footer_subs_loading").css("display", "block");
-
     $.ajax({
         type: 'POST',
         url: config.routes.subscriberCreate,
@@ -63,7 +61,7 @@ $("#footer_subs_form").submit(function(e){
         },
         beforeSend: function()
         {
-            $("#footer_subs_loading").css("display", "block");
+            $("#loading_circle").css("display", "block");
         },
         success: function(response)
         {
@@ -77,7 +75,7 @@ $("#footer_subs_form").submit(function(e){
 
             $("#footer_subs_msg").css("display", "block");
             $("#footer_subs_input").val("");
-            $("#footer_subs_loading").css("display", "none");
+            $("#loading_circle").css("display", "none");
         },
     });
 

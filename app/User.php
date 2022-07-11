@@ -36,4 +36,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getSubscribedAttribute() {
+
+        return (Subscriber::where('email', $this->email)->exists()) ? true : false;
+
+    }
+
 }

@@ -38,6 +38,7 @@
     <link rel="yandex-tableau-widget" href="/images/favicons/yandex-browser-manifest.json">
 
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/main2.css">
     <link rel="stylesheet" href="/css/subscribe.css">
     <link rel="stylesheet" href="/css/modals.css">
 
@@ -53,6 +54,7 @@
                 subscriberCreate: "{{ route('subscriber-create') }}",
                 profileIndex: "{{ route('profile-index') }}",
                 login: "{{ route('login') }}",
+                register: "{{ route('register') }}",
             },
         };
 
@@ -123,10 +125,14 @@
                         @endguest
                         @auth
 
-                            <div class="profile"> <a class="profile__notify" href="">
+                            <div class="profile">
+
+                                <a class="profile__notify" href="">
                                     <svg class="icon icon-notify ">
                                         <use xlink:href="/images/sprite.svg#notify"></use>
-                                    </svg><span>12</span></a>
+                                    </svg>{{--<span>12</span>--}}
+                                </a>
+
                                 <div class="profile__user"> <a class="profile__ava" href="{{ route("profile-index") }}"> <img src="/images/upload/9.webp" alt=""></a>
                                     <div class="profile__btn">Профиль
                                         <svg class="icon icon-arrow-left ">
@@ -134,16 +140,29 @@
                                         </svg>
                                     </div>
                                 </div>
-                                <div class="profile__drop"> <a class="profile__link" href="{{ route("profile-index") }}">
-                                    <svg class="icon icon-user ">
-                                        <use xlink:href="/images/sprite.svg#user"></use>
-                                    </svg><span>Мой профиль</span></a><a class="profile__link" href="/profile-comments.html">
-                                    <svg class="icon icon-chat ">
-                                        <use xlink:href="/images/sprite.svg#chat"></use>
-                                    </svg><span>Мои комментарии <sup>176</sup></span></a><a class="profile__link" href="/profile-bookmarks.html">
-                                    <svg class="icon icon-bookmark ">
-                                        <use xlink:href="/images/sprite.svg#bookmark"></use>
-                                    </svg><span>Мои закладки <sup>7</sup></span></a>
+                                <div class="profile__drop">
+
+                                    <a class="profile__link" href="{{ route("profile-index") }}">
+                                        <svg class="icon icon-user ">
+                                            <use xlink:href="/images/sprite.svg#user"></use>
+                                        </svg>
+                                        <span>Мой профиль</span>
+                                    </a>
+
+                                    {{--<a class="profile__link" href="/profile-comments.html">
+                                        <svg class="icon icon-chat ">
+                                            <use xlink:href="/images/sprite.svg#chat"></use>
+                                        </svg>
+                                        <span>Мои комментарии <sup>176</sup></span>
+                                    </a>--}}
+
+                                    <a class="profile__link" href="/profile-bookmarks.html">
+                                        <svg class="icon icon-bookmark ">
+                                            <use xlink:href="/images/sprite.svg#bookmark"></use>
+                                        </svg>
+                                        <span>Мои закладки <sup>7</sup></span>
+                                    </a>
+
                                 </div>
                             </div>
                             <div class="enter"> <a class="btn enter__btn btn--black" href="{{ route("logout") }}">Выйти</a>
@@ -247,7 +266,6 @@
                                     >
                                     <label>Ваш email</label>
 
-
                                     <div id="footer_subs_msg">
                                         <div style="position: absolute; top: 2px; left: 0;">
                                             <svg class="icon icon-valid ">
@@ -258,8 +276,6 @@
                                             !!!
                                         </span>
                                     </div>
-
-                                    <img id="footer_subs_loading" src="/images/loading.gif" alt="">
 
                                 </div>
                             </div>
@@ -365,19 +381,16 @@
                 <div class="login__form">
                     <div>
                         <div class="input-form">
-                            <input type="email" name="" id="modal_enter_inp_email" data-empty="true" autocomplete="off" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" oninvalid="this.setCustomValidity('Введенный текст не является имейлом')" oninput="this.setCustomValidity('')" required />
-                            <label>Ваш email</label>
+                            <input type="email" name="" id="modal_enter_inp_email" data-empty="true" placeholder="Ваш email" data-empty="true" autocomplete="dsfdsfdsf" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" oninvalid="this.setCustomValidity('Введенный текст не является имейлом')" oninput="this.setCustomValidity('')" required />
                         </div>
                     </div>
                     <div>
                         <div class="input-form">
-                            <input type="password" name="" id="modal_enter_inp_pass" data-empty="true" autocomplete="off" pattern="[^<]{3,10}" oninvalid="this.setCustomValidity('Длина пароля - от 3 до 10 символов')" oninput="this.setCustomValidity('')" required />
-                            <label>Пароль</label>
+                            <input type="password" name="" id="modal_enter_inp_pass" data-empty="true" placeholder="Пароль" data-empty="true" autocomplete="new-password" pattern="[^<]{3,10}" oninvalid="this.setCustomValidity('Длина пароля - от 3 до 10 символов')" oninput="this.setCustomValidity('')" required />
                         </div>
                     </div>
                     <div><a class="lost-pass" href="#" onclick="return false;">Я забыл пароль :( </a></div>
                     <button class="btn btn--orange" type="submit">Войти</button>
-                    <img id="modal_enter_loading" src="/images/loading.gif" alt="">
                     <div id="modal_enter_msg"></div>
                 </div>
             </form>
@@ -407,13 +420,12 @@
                     <svg class="icon icon-google ">
                         <use xlink:href="/images/sprite.svg#google"></use>
                     </svg></a></div>
-            <form action="">
+            <form action="" id="modal_register_form">
                 <div class="login__form">
                     <div>или:</div>
                     <div>
                         <div class="input-form">
-                            <input type="email" name="" data-empty="true" autocomplete="off"/>
-                            <label>Ваш email</label>
+                            <input type="email" name="" id="modal_register_inp_email" placeholder="Ваш email" data-empty="true" autocomplete="sdffds" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" oninvalid="this.setCustomValidity('Введенный текст не является имейлом')" oninput="this.setCustomValidity('')" required />
                         </div>
                     </div>
                     {{--<div>
@@ -424,19 +436,16 @@
                     </div>--}}
                     <div>
                         <div class="input-form password">
-                            <input type="password" name="" data-empty="true" autocomplete="off"/>
-                            <label>Пароль</label>
+                            <input type="password" name="" id="modal_register_inp_pass" placeholder="Пароль" data-empty="true" autocomplete="new-password" pattern="[^<]{3,10}" oninvalid="this.setCustomValidity('Длина пароля - от 3 до 10 символов')" oninput="this.setCustomValidity('')" required/>
                         </div>
                     </div>
                     <div>
                         <div class="input-form double-password">
-                            <input type="password" name="" data-empty="true" autocomplete="off"/>
-                            <label>Повторите пароль</label>
+                            <input type="password" name="" id="modal_register_inp_pass_repeat" placeholder="Повторите пароль" data-empty="true" autocomplete="sdffаsdfds" pattern="[^<]{3,10}" oninvalid="this.setCustomValidity('Длина пароля - от 3 до 10 символов')" oninput="this.setCustomValidity('')" required />
                         </div>
                     </div>
                     <button class="btn btn--orange" type="submit">Зарегистрироваться</button>
-                    <img id="modal_register_loading" src="/images/loading.gif" alt="">
-                    <div id="modal_register_msg">sdf</div>
+                    <div id="modal_register_msg"></div>
                 </div>
             </form>
         </div>
@@ -524,7 +533,7 @@
         <use xlink:href="/images/sprite.svg#arrow-up"></use>
     </svg></a>
 
-<div style="position: fixed; z-index: 1000; top: 50%; left: 50%; margin-left: -15px; margin-top: -15px;">
+<div id="loading_circle" style="position: fixed; z-index: 1000; top: 50%; left: 50%; margin-left: -15px; margin-top: -15px; display: none">
     <img id="" src="/images/loading.gif" alt="" style="width:30px; height:30px">
 </div>
 

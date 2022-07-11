@@ -17,11 +17,13 @@ Route::get('/zzz', function () {
 
 Route::post('/subscriber', 'SubscriberController@create')->name("subscriber-create");
 Route::post('/auth/login', 'AuthController@login')->name("login");
+Route::post('/auth/register', 'AuthController@register')->name("register");
 
 Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/profile', 'ProfileController@index')->name("profile-index");
     Route::get('/profile/logout', 'AuthController@logout')->name("logout");
+    Route::post('/profile/update', 'ProfileController@updateProfile')->name("profile-update");
 
 });
 

@@ -815,7 +815,6 @@
                                         </span>
                                         </div>
 
-                                        <img id="home_subs_loading" src="/images/loading.gif" alt="">
                                     </div>
                                 </div>
                                 <input class="btn btn--orange subscribe__submit" type="submit" value="Подписаться">
