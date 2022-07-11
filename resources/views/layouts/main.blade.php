@@ -36,8 +36,11 @@
     <link rel="apple-touch-icon" sizes="1024x1024" href="/images/favicons/apple-touch-icon-1024x1024.png">
     <link rel="icon" type="image/png" sizes="228x228" href="/images/favicons/coast-228x228.png">
     <link rel="yandex-tableau-widget" href="/images/favicons/yandex-browser-manifest.json">
+
     <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/main2.css">
+    <link rel="stylesheet" href="/css/subscribe.css">
+    <link rel="stylesheet" href="/css/modals.css">
+
     <script type="text/javascript" src="https://yastatic.net/jquery/2.1.3/jquery.min.js"></script>
 
     <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
@@ -48,6 +51,8 @@
         var config = {
             routes: {
                 subscriberCreate: "{{ route('subscriber-create') }}",
+                profileIndex: "{{ route('profile-index') }}",
+                login: "{{ route('login') }}",
             },
         };
 
@@ -109,8 +114,43 @@
                                 </div><a class="btn tgBox__button" href="https://t.me/SIGEN_Media" target="_blank">Подписаться </a>
                             </div>
                         </div>
-                        <div class="enter"> <a class="btn enter__btn btn--black login-btn" href="" data-modalshow="login">Войти</a><a class="btn enter__btn btn--orange register-btn" href="" data-modalshow="register">Зарегистрироваться</a>
-                        </div>
+
+                        @guest
+
+                            <div class="enter"> <a class="btn enter__btn btn--black login-btn" href="" data-modalshow="login">Войти</a><a class="btn enter__btn btn--orange register-btn" href="" data-modalshow="register">Зарегистрироваться</a>
+                            </div>
+
+                        @endguest
+                        @auth
+
+                            <div class="profile"> <a class="profile__notify" href="">
+                                    <svg class="icon icon-notify ">
+                                        <use xlink:href="/images/sprite.svg#notify"></use>
+                                    </svg><span>12</span></a>
+                                <div class="profile__user"> <a class="profile__ava" href="{{ route("profile-index") }}"> <img src="/images/upload/9.webp" alt=""></a>
+                                    <div class="profile__btn">Профиль
+                                        <svg class="icon icon-arrow-left ">
+                                            <use xlink:href="/images/sprite.svg#arrow-left"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="profile__drop"> <a class="profile__link" href="{{ route("profile-index") }}">
+                                    <svg class="icon icon-user ">
+                                        <use xlink:href="/images/sprite.svg#user"></use>
+                                    </svg><span>Мой профиль</span></a><a class="profile__link" href="/profile-comments.html">
+                                    <svg class="icon icon-chat ">
+                                        <use xlink:href="/images/sprite.svg#chat"></use>
+                                    </svg><span>Мои комментарии <sup>176</sup></span></a><a class="profile__link" href="/profile-bookmarks.html">
+                                    <svg class="icon icon-bookmark ">
+                                        <use xlink:href="/images/sprite.svg#bookmark"></use>
+                                    </svg><span>Мои закладки <sup>7</sup></span></a>
+                                </div>
+                            </div>
+                            <div class="enter"> <a class="btn enter__btn btn--black" href="{{ route("logout") }}">Выйти</a>
+                            </div>
+
+                        @endauth
+
                     </div>
                     <div class="header__mobile"> <a class="hamburger hamburger--js" href="#"><span></span></a>
                         <div class="logo"> <a class="logo__link" href="/"> <img src="/images/logo/logo--white.svg" alt=""></a></div>
@@ -307,60 +347,38 @@
         <div class="login">
             <div class="login__social">
                 <div class="login__social-text">Вход с помощью социальных сетей:</div>
-                <div class="login__social-icons"> <a class="login__social-link" href="" style="background-color:#1DA1F2">
+                <div class="login__social-icons"> <a class="login__social-link" href="#" onclick="return false;" style="background-color:#1DA1F2">
                         <svg class="icon icon-twitter ">
                             <use xlink:href="/images/sprite.svg#twitter"></use>
-                        </svg></a><a class="login__social-link" href="" style="background-color:#1C257B">
+                        </svg></a><a class="login__social-link" href="#" onclick="return false;" style="background-color:#1C257B">
                         <svg class="icon icon-facebook ">
                             <use xlink:href="/images/sprite.svg#facebook"></use>
-                        </svg></a><a class="login__social-link" href="" style="background-color:#5181B8">
+                        </svg></a><a class="login__social-link" href="#" onclick="return false;" style="background-color:#5181B8">
                         <svg class="icon icon-vk ">
                             <use xlink:href="/images/sprite.svg#vk"></use>
-                        </svg></a><a class="login__social-link" href="" style="background-color:#DD4B39">
+                        </svg></a><a class="login__social-link" href="#" onclick="return false;" style="background-color:#DD4B39">
                         <svg class="icon icon-google ">
                             <use xlink:href="/images/sprite.svg#google"></use>
                         </svg></a></div>
             </div>
-            <form action="">
+            <form action="" id="modal_enter_form">
                 <div class="login__form">
                     <div>
                         <div class="input-form">
-                            <input type="email" name="" data-empty="true" autocomplete="off"/>
+                            <input type="email" name="" id="modal_enter_inp_email" data-empty="true" autocomplete="off" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" oninvalid="this.setCustomValidity('Введенный текст не является имейлом')" oninput="this.setCustomValidity('')" required />
                             <label>Ваш email</label>
-                            <div class="input-form__result">
-                                <div class="valid">
-                                    <svg class="icon icon-valid ">
-                                        <use xlink:href="/images/sprite.svg#valid"></use>
-                                    </svg> —  Сохранено
-                                </div>
-                                <div class="invalid">
-                                    <svg class="icon icon-invalid ">
-                                        <use xlink:href="/images/sprite.svg#invalid"></use>
-                                    </svg> —  Текст ошибки
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div>
                         <div class="input-form">
-                            <input type="password" name="" data-empty="true" autocomplete="off"/>
+                            <input type="password" name="" id="modal_enter_inp_pass" data-empty="true" autocomplete="off" pattern="[^<]{3,10}" oninvalid="this.setCustomValidity('Длина пароля - от 3 до 10 символов')" oninput="this.setCustomValidity('')" required />
                             <label>Пароль</label>
-                            <div class="input-form__result">
-                                <div class="valid">
-                                    <svg class="icon icon-valid ">
-                                        <use xlink:href="/images/sprite.svg#valid"></use>
-                                    </svg> —  Сохранено
-                                </div>
-                                <div class="invalid">
-                                    <svg class="icon icon-invalid ">
-                                        <use xlink:href="/images/sprite.svg#invalid"></use>
-                                    </svg> —  Текст ошибки
-                                </div>
-                            </div>
                         </div>
                     </div>
-                    <div><a class="lost-pass" href="">Я забыл пароль :( </a></div>
+                    <div><a class="lost-pass" href="#" onclick="return false;">Я забыл пароль :( </a></div>
                     <button class="btn btn--orange" type="submit">Войти</button>
+                    <img id="modal_enter_loading" src="/images/loading.gif" alt="">
+                    <div id="modal_enter_msg"></div>
                 </div>
             </form>
         </div>
@@ -396,75 +414,29 @@
                         <div class="input-form">
                             <input type="email" name="" data-empty="true" autocomplete="off"/>
                             <label>Ваш email</label>
-                            <div class="input-form__result">
-                                <div class="valid">
-                                    <svg class="icon icon-valid ">
-                                        <use xlink:href="/images/sprite.svg#valid"></use>
-                                    </svg> —  Сохранено
-                                </div>
-                                <div class="invalid">
-                                    <svg class="icon icon-invalid ">
-                                        <use xlink:href="/images/sprite.svg#invalid"></use>
-                                    </svg> —  Текст ошибки
-                                </div>
-                            </div>
                         </div>
                     </div>
-                    <div>
+                    {{--<div>
                         <div class="input-form">
                             <input type="text" name="" data-empty="true" autocomplete="off"/>
                             <label>Логин</label>
-                            <div class="input-form__result">
-                                <div class="valid">
-                                    <svg class="icon icon-valid ">
-                                        <use xlink:href="/images/sprite.svg#valid"></use>
-                                    </svg> —  Сохранено
-                                </div>
-                                <div class="invalid">
-                                    <svg class="icon icon-invalid ">
-                                        <use xlink:href="/images/sprite.svg#invalid"></use>
-                                    </svg> —  Текст ошибки
-                                </div>
-                            </div>
                         </div>
-                    </div>
+                    </div>--}}
                     <div>
                         <div class="input-form password">
                             <input type="password" name="" data-empty="true" autocomplete="off"/>
                             <label>Пароль</label>
-                            <div class="input-form__result">
-                                <div class="valid">
-                                    <svg class="icon icon-valid ">
-                                        <use xlink:href="/images/sprite.svg#valid"></use>
-                                    </svg> —  Сохранено
-                                </div>
-                                <div class="invalid">
-                                    <svg class="icon icon-invalid ">
-                                        <use xlink:href="/images/sprite.svg#invalid"></use>
-                                    </svg> —  Текст ошибки
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div>
                         <div class="input-form double-password">
                             <input type="password" name="" data-empty="true" autocomplete="off"/>
                             <label>Повторите пароль</label>
-                            <div class="input-form__result">
-                                <div class="valid">
-                                    <svg class="icon icon-valid ">
-                                        <use xlink:href="/images/sprite.svg#valid"></use>
-                                    </svg> —  Сохранено
-                                </div>
-                                <div class="invalid">
-                                    <svg class="icon icon-invalid ">
-                                        <use xlink:href="/images/sprite.svg#invalid"></use>
-                                    </svg> —  Текст ошибки
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <button class="btn btn--orange" type="submit">Зарегистрироваться</button>
+                    <img id="modal_register_loading" src="/images/loading.gif" alt="">
+                    <div id="modal_register_msg">sdf</div>
                 </div>
             </form>
         </div>
@@ -551,7 +523,13 @@
     <svg class="icon icon-arrow-up ">
         <use xlink:href="/images/sprite.svg#arrow-up"></use>
     </svg></a>
-<script src="/js/main2.js"></script>
+
+<div style="position: fixed; z-index: 1000; top: 50%; left: 50%; margin-left: -15px; margin-top: -15px;">
+    <img id="" src="/images/loading.gif" alt="" style="width:30px; height:30px">
+</div>
+
+<script src="/js/main.js"></script>
+<script src="/js/subscribe.js"></script>
 <script src="/js/modals.js"></script>
 </body>
 </html>

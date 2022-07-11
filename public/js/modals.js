@@ -4,7 +4,7 @@ var more = document.querySelector('[data-modal="restore-1"] .btn');
 var register = document.querySelector('[data-modal="register"] .btn');
 var loginAfterReg = document.querySelector('[data-modal="register-ok"] .btn');
 
-if (lostPass) {
+/*if (lostPass) {
     lostPass.addEventListener('click', function (e) {
         e.preventDefault();
         //(0,_modal_modal__WEBPACK_IMPORTED_MODULE_0__.modalRemove)();
@@ -12,7 +12,7 @@ if (lostPass) {
         //(0,_modal_modal__WEBPACK_IMPORTED_MODULE_0__.modalAdd)('restore-1');
         modalAdd('restore-1');
     });
-}
+}*/
 
 if (more) {
     more.addEventListener('click', function (e) {
@@ -98,4 +98,45 @@ document.addEventListener('click', function (e) {
         var btn = target.closest('[data-modalshow]');
         modalAdd(btn.dataset.modalshow);
     }
+});
+
+///////////// Enter
+
+$("#modal_enter_form").submit(function(e){
+
+    e.preventDefault();
+
+    var email = $("#modal_enter_inp_email").val();
+    var pass = $("#modal_enter_inp_pass").val();
+
+    $.ajax({
+        type: 'POST',
+        url: config.routes.login,
+        data: {
+            email: email,
+            pass: pass
+        },
+        beforeSend: function()
+        {
+            $("#modal_enter_loading").css("display", "block");
+        },
+        success: function(response)
+        {
+            if (response["status"] == "ok") {
+                window.location.href = config.routes.profileIndex;
+            }
+            else {
+                $("#modal_enter_msg").html(response["error_msg"]);
+            }
+
+            $("#modal_enter_loading").css("display", "none");
+        },
+    });
+
+});
+
+///////////// Register
+
+$( document ).ready(function() {
+    modalAdd('register');
 });

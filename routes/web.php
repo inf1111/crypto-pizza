@@ -13,6 +13,17 @@ Route::get('/zzz', function () {
 
 });
 
+// Ajax
+
+Route::post('/subscriber', 'SubscriberController@create')->name("subscriber-create");
+Route::post('/auth/login', 'AuthController@login')->name("login");
+
+Route::group(['middleware' => 'auth'], function () {
+
+    Route::get('/profile', 'ProfileController@index')->name("profile-index");
+    Route::get('/profile/logout', 'AuthController@logout')->name("logout");
+
+});
 
 Route::get('/', 'PostController@home')->name("home");
 Route::get('/search', 'PostController@search')->name("search");
@@ -20,6 +31,5 @@ Route::get('/{category}', 'PostController@index')->name("cat-index");
 Route::get('/{category}/{slug}', 'PostController@show')->name("post-show");
 
 
-Route::post('/subscriber', 'SubscriberController@create')->name("subscriber-create");
 
 
