@@ -37,6 +37,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function bookmarkedPosts() {
+
+        return $this->belongsToMany('App\Post', 'bookmarks', 'user_id', 'post_id')->orderBy('date_time','desc'); //таблицу следовало назвать не bookmarks, а user_posts
+
+    }
+
+    public function likedPosts() {
+
+        return $this->belongsToMany('App\Post', 'likesp', 'user_id', 'post_id')->orderBy('date_time','desc'); //таблицу следовало назвать не likesp, а user_posts
+
+    }
+
     public function getSubscribedAttribute() {
 
         return (Subscriber::where('email', $this->email)->exists()) ? true : false;

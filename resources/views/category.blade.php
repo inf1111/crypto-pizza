@@ -1,3 +1,5 @@
+@inject('carbon', '\Illuminate\Support\Carbon')
+
 @extends("layouts.main")
 @section("content")
 
@@ -12,15 +14,10 @@
             <div class="columns--middle">
                 <h1 class="page-title">{{ $category->name_rus }}</h1>
                 <div class="mainInfo module">
-                    <div class="cardFill themeOfTheDay"><a class="cardFill__link" href=""> <img class="cardFill__image" src="/images/upload/1.webp" alt=""/>
+
+                    <div class="cardFill themeOfTheDay"><a class="cardFill__link" href="{{ route('post-show', [$category->name, $posts[0]->slug]) }}"> <img class="cardFill__image" src="/{{ $posts[0]->image }}" alt=""/>
                             <div class="cardFill__frame">
                                 <div class="cardFill__top">
-                                    <div class="cardFill__tag">
-                                        <svg class="icon icon-paper cardFill__tagIcon">
-                                            <use xlink:href="/images/sprite.svg#paper"></use>
-                                        </svg>
-                                        <div class="cardFill__tagText">тема дня</div>
-                                    </div>
                                     <div class="cardFill__comment hot">
                                         <svg class="icon icon-fire cardFill__commentIcon">
                                             <use xlink:href="/images/sprite.svg#fire"></use>
@@ -29,20 +26,16 @@
                                     </div>
                                 </div>
                                 <div class="cardFill__bottom">
-                                    <div class="cardFill__date"> 5 Января 2022 &bull; 10:45 &bull; Статьи
+                                    <div class="cardFill__date"> {{ $posts[0]->date_formatted }} &bull; {{ $carbon::parse($posts[0]->date_time)->format('H:i') }} &bull; {{ $posts[0]->category->name_rus }}
                                     </div>
-                                    <div class="cardFill__name">Неизвестный биткоин-майнер добыл блок — вероятность такого события менее 0,0001%</div>
+                                    <div class="cardFill__name">{{ $posts[0]->title }}</div>
                                 </div>
-                            </div></a></div>
-                    <div class="cardFill editorChoice"><a class="cardFill__link" href=""> <img class="cardFill__image" src="/images/upload/2.webp" alt=""/>
+                            </div></a>
+                    </div>
+
+                    <div class="cardFill editorChoice"><a class="cardFill__link" href="{{ route('post-show', [$category->name, $posts[1]->slug]) }}"> <img class="cardFill__image" src="/{{ $posts[1]->image }}" alt=""/>
                             <div class="cardFill__frame">
                                 <div class="cardFill__top">
-                                    <div class="cardFill__tag">
-                                        <svg class="icon icon-target cardFill__tagIcon">
-                                            <use xlink:href="/images/sprite.svg#target"></use>
-                                        </svg>
-                                        <div class="cardFill__tagText">Выбор <br> редакции</div>
-                                    </div>
                                     <div class="cardFill__comment">
                                         <svg class="icon icon-comment cardFill__commentIcon">
                                             <use xlink:href="/images/sprite.svg#comment"></use>
@@ -51,40 +44,46 @@
                                     </div>
                                 </div>
                                 <div class="cardFill__bottom">
-                                    <div class="cardFill__date"> 4 часа назад &bull; Статьи
+                                    <div class="cardFill__date"> {{ trans_choice("main.hours_number", $carbon::now()->copy()->diffInHours($posts[1]->date_time)) }} назад &bull; {{ $posts[0]->category->name_rus }}
                                     </div>
-                                    <div class="cardFill__name">Майнинг биткоина: что ждет сектор в 2022 году?</div>
+                                    <div class="cardFill__name">{{ $posts[1]->title }}</div>
                                 </div>
-                            </div></a></div>
+                            </div></a>
+                    </div>
+
                 </div>
                 <div class="module">
 
-                    @forelse ($posts as $post)
+                    @forelse ($posts as $key => $post)
 
-                        <div class="newsCard module"><a class="newsCard__image" href="{{ route('post-show', [$category->name, $post->slug]) }}"><img src="/{{ $post->image }}" alt=""/></a>
-                            <div class="newsCard__content">
-                                <div class="newsCard__title"><a href="{{ route('post-show', [$category->name, $post->slug]) }}">{{ $post->title }}</a></div>
-                                <div class="newsCard__info">
-                                    <div class="newsCard__date">{{ $post->date_formatted }}</div>
-                                    <div class="newsCard__category">{{ $post->category->name_rus }}</div>
-                                    <div class="newsCard__comment">
-                                        <svg class="icon icon-comment newsCard__commentIcon">
-                                            <use xlink:href="/images/sprite.svg#comment"></use>
-                                        </svg>
-                                        <div class="newsCard__commentSize">25</div>
+                        @if($key >= 2)
+
+                            <div class="newsCard module"><a class="newsCard__image" href="{{ route('post-show', [$category->name, $post->slug]) }}"><img src="/{{ $post->image }}" alt=""/></a>
+                                <div class="newsCard__content">
+                                    <div class="newsCard__title"><a href="{{ route('post-show', [$category->name, $post->slug]) }}">{{ $post->title }}</a></div>
+                                    <div class="newsCard__info">
+                                        <div class="newsCard__date">{{ $post->date_formatted }}</div>
+                                        <div class="newsCard__category">{{ $post->category->name_rus }}</div>
+                                        <div class="newsCard__comment">
+                                            <svg class="icon icon-comment newsCard__commentIcon">
+                                                <use xlink:href="/images/sprite.svg#comment"></use>
+                                            </svg>
+                                            <div class="newsCard__commentSize">25</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="newsCard__text">{{ $post->descr }}</div>
-                                <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="{{ route('post-show', [$category->name, $post->slug]) }}">Читать полностью </a>
-                                    <div class="newsCard__timeRead">
-                                        <svg class="icon icon-time newsCard__timeReadIcon">
-                                            <use xlink:href="/images/sprite.svg#time"></use>
-                                        </svg>
-                                        <div class="newsCard__timeReadText">Время на прочтение 15 мин.</div>
+                                    <div class="newsCard__text">{{ $post->descr }}</div>
+                                    <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="{{ route('post-show', [$category->name, $post->slug]) }}">Читать полностью </a>
+                                        <div class="newsCard__timeRead">
+                                            <svg class="icon icon-time newsCard__timeReadIcon">
+                                                <use xlink:href="/images/sprite.svg#time"></use>
+                                            </svg>
+                                            <div class="newsCard__timeReadText">Время на прочтение 15 мин.</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+
+                        @endif
 
                     @empty
                         <h1>No posts</h1>

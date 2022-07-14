@@ -42,7 +42,11 @@
     <link rel="stylesheet" href="/css/subscribe.css">
     <link rel="stylesheet" href="/css/modals.css">
 
+
     <script type="text/javascript" src="https://yastatic.net/jquery/2.1.3/jquery.min.js"></script>
+
+    {{--<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.css'>
+    <script src='https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.js'></script>--}}
 
     <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
     <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
@@ -133,7 +137,7 @@
                                     </svg>{{--<span>12</span>--}}
                                 </a>
 
-                                <div class="profile__user"> <a class="profile__ava" href="{{ route("profile-index") }}"> <img src="/images/upload/9.webp" alt=""></a>
+                                <div class="profile__user"> <a class="profile__ava" href="{{ route("profile-index") }}"> <img src="/images/anon.png" alt=""></a>
                                     <div class="profile__btn">Профиль
                                         <svg class="icon icon-arrow-left ">
                                             <use xlink:href="/images/sprite.svg#arrow-left"></use>
@@ -156,11 +160,11 @@
                                         <span>Мои комментарии <sup>176</sup></span>
                                     </a>--}}
 
-                                    <a class="profile__link" href="/profile-bookmarks.html">
+                                    <a class="profile__link" href="{{ route("profile-bookmarks") }}">
                                         <svg class="icon icon-bookmark ">
                                             <use xlink:href="/images/sprite.svg#bookmark"></use>
                                         </svg>
-                                        <span>Мои закладки <sup>7</sup></span>
+                                        <span>Мои закладки <sup>{{ Auth::user()->bookmarkedPosts->count() }}</sup></span>
                                     </a>
 
                                 </div>
@@ -538,6 +542,9 @@
 </div>
 
 <script src="/js/main.js"></script>
+<script src="/js/simplebar.js"></script>
+
+
 <script src="/js/subscribe.js"></script>
 <script src="/js/modals.js"></script>
 </body>

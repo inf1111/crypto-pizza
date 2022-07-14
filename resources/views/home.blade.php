@@ -1,3 +1,5 @@
+@inject('carbon', '\Illuminate\Support\Carbon')
+
 @extends("layouts.main")
 @section("meta")
     <title>Crypto Pizza — лучший журнал о криптовалютах и блокчейн-технологии.</title>
@@ -12,7 +14,8 @@
         <div class="columns">
             <div class="columns--middle">
                 <div class="mainInfo module">
-                    <div class="cardFill themeOfTheDay"><a class="cardFill__link" href=""> <img class="cardFill__image" src="./images/upload/1.webp" alt=""/>
+
+                    <div class="cardFill themeOfTheDay"><a class="cardFill__link" href="{{ route('post-show', [$topicOfDay->category->name, $topicOfDay->slug]) }}"> <img class="cardFill__image" src="/{{ $topicOfDay->image }}" alt=""/>
                             <div class="cardFill__frame">
                                 <div class="cardFill__top">
                                     <div class="cardFill__tag">
@@ -29,12 +32,14 @@
                                     </div>
                                 </div>
                                 <div class="cardFill__bottom">
-                                    <div class="cardFill__date"> 5 Января 2022 &bull; 10:45 &bull; Статьи
+                                    <div class="cardFill__date"> {{ $topicOfDay->date_formatted }} &bull; {{ $carbon::parse($topicOfDay->date_time)->format('H:i') }} &bull; {{ $topicOfDay->category->name_rus }}
                                     </div>
-                                    <div class="cardFill__name">Неизвестный биткоин-майнер добыл блок — вероятность такого события менее 0,0001%</div>
+                                    <div class="cardFill__name">{{ $topicOfDay->title }}</div>
                                 </div>
-                            </div></a></div>
-                    <div class="cardFill editorChoice"><a class="cardFill__link" href=""> <img class="cardFill__image" src="./images/upload/2.webp" alt=""/>
+                            </div></a>
+                    </div>
+
+                    <div class="cardFill editorChoice"><a class="cardFill__link" href="{{ route('post-show', [$editorsChoice->category->name, $editorsChoice->slug]) }}"> <img class="cardFill__image" src="/{{ $editorsChoice->image }}" alt=""/>
                             <div class="cardFill__frame">
                                 <div class="cardFill__top">
                                     <div class="cardFill__tag">
@@ -51,23 +56,26 @@
                                     </div>
                                 </div>
                                 <div class="cardFill__bottom">
-                                    <div class="cardFill__date"> 4 часа назад &bull; Статьи
+                                    <div class="cardFill__date"> {{ trans_choice("main.hours_number", $carbon::now()->copy()->diffInHours($editorsChoice->date_time)) }} назад &bull; {{ $editorsChoice->category->name_rus }}
                                     </div>
-                                    <div class="cardFill__name">Майнинг биткоина: что ждет сектор в 2022 году?</div>
+                                    <div class="cardFill__name">{{ $editorsChoice->title }}</div>
                                 </div>
-                            </div></a></div>
+                            </div></a>
+                    </div>
+
                 </div>
                 <div class="newsFeed module">
                     <div class="newsFeed__header">
-                        <div class="newsFeed__title">Лента новостей</div>
-                        <div class="newsFeed__all"> <a href="">Все новости</a></div>
+                        <div class="newsFeed__title">Последние новости</div>
+                        <div class="newsFeed__all"> <a href="{{ route("cat-index", "news") }}">Все новости</a></div>
                     </div>
                     <div class="newsFeed__main">
+
                         <div class="newsFeed__first">
                             <div class="newsFeed__item">
-                                <div class="newsFeed__image"> <a href=""><img src="./images/upload/3.webp" alt=""></a></div>
+                                <div class="newsFeed__image"> <a href="{{ route('post-show', [$recentNews->first()->category->name, $recentNews->first()->slug]) }}"><img src="/{{ $recentNews->first()->image }}" alt=""></a></div>
                                 <div class="newsFeed__body">
-                                    <div class="newsFeed__name"><a href="">Майнинг биткоина: что ждет сектор в 2022 году?</a></div>
+                                    <div class="newsFeed__name"><a href="{{ route('post-show', [$recentNews->first()->category->name, $recentNews->first()->slug]) }}">{{ $recentNews->first()->title }}</a></div>
                                     <div class="newsFeed__info">
                                         <div class="newsFeed__comment">
                                             <svg class="icon icon-comment newsFeed__commentIcon">
@@ -75,188 +83,73 @@
                                             </svg>
                                             <div class="newsFeed__commentSize">25</div>
                                         </div>
-                                        <div class="newsFeed__time">16:03</div>
+                                        <div class="newsFeed__time">{{ $carbon::parse($recentNews->first()->date_time)->format('H:i') }}</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="newsFeed__list" data-simplebar>
-                            <div class="newsFeed__item">
-                                <div class="newsFeed__image"> <a href=""><img src="./images/upload/4.webp" alt=""></a></div>
-                                <div class="newsFeed__body">
-                                    <div class="newsFeed__name"><a href="">Через отрицание к принятию: как менялось отношение Visa к криптовалютам?</a></div>
-                                    <div class="newsFeed__info">
-                                        <div class="newsFeed__comment hot">
-                                            <svg class="icon icon-fire newsFeed__commentIcon">
-                                                <use xlink:href="./images/sprite.svg#fire"></use>
-                                            </svg>
-                                            <div class="newsFeed__commentSize">170</div>
+
+                            @foreach($recentNews as $key => $item)
+
+                                @if ($key > 0)
+
+                                    <div class="newsFeed__item">
+                                        <div class="newsFeed__image"> <a href="{{ route('post-show', [$item->category->name, $item->slug]) }}"><img src="/{{ $item->image }}" alt=""></a></div>
+                                        <div class="newsFeed__body">
+                                            <div class="newsFeed__name"><a href="{{ route('post-show', [$item->category->name, $item->slug]) }}">{{ $item->title }}</a></div>
+                                            <div class="newsFeed__info">
+                                                <div class="newsFeed__comment hot">
+                                                    <svg class="icon icon-fire newsFeed__commentIcon">
+                                                        <use xlink:href="./images/sprite.svg#fire"></use>
+                                                    </svg>
+                                                    <div class="newsFeed__commentSize">170</div>
+                                                </div>
+                                                <div class="newsFeed__time">{{ $carbon::parse($item->date_time)->format('H:i') }}</div>
+                                            </div>
                                         </div>
-                                        <div class="newsFeed__time">8:29</div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="newsFeed__item">
-                                <div class="newsFeed__image"> <a href=""><img src="./images/upload/5.webp" alt=""></a></div>
-                                <div class="newsFeed__body">
-                                    <div class="newsFeed__name"><a href="">Неизвестный биткоин-майнер добыл какой то типа блок — вероятность такого события менее 0,0001%</a></div>
-                                    <div class="newsFeed__info">
-                                        <div class="newsFeed__comment hot">
-                                            <svg class="icon icon-fire newsFeed__commentIcon">
-                                                <use xlink:href="./images/sprite.svg#fire"></use>
-                                            </svg>
-                                            <div class="newsFeed__commentSize">90</div>
-                                        </div>
-                                        <div class="newsFeed__time">7:03</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="newsFeed__item">
-                                <div class="newsFeed__image"> <a href=""><img src="./images/upload/6.webp" alt=""></a></div>
-                                <div class="newsFeed__body">
-                                    <div class="newsFeed__name"><a href="">Через отрицание к принятию: как менялось отношение Visa к криптовалютам?</a></div>
-                                    <div class="newsFeed__info">
-                                        <div class="newsFeed__comment">
-                                            <svg class="icon icon-comment newsFeed__commentIcon">
-                                                <use xlink:href="./images/sprite.svg#comment"></use>
-                                            </svg>
-                                            <div class="newsFeed__commentSize">25</div>
-                                        </div>
-                                        <div class="newsFeed__time">8:03</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="newsFeed__item">
-                                <div class="newsFeed__image"> <a href=""><img src="./images/upload/2.webp" alt=""></a></div>
-                                <div class="newsFeed__body">
-                                    <div class="newsFeed__name"><a href="">Майнинг биткоина: что ждет сектор в 2022 году?</a></div>
-                                    <div class="newsFeed__info">
-                                        <div class="newsFeed__comment">
-                                            <svg class="icon icon-comment newsFeed__commentIcon">
-                                                <use xlink:href="./images/sprite.svg#comment"></use>
-                                            </svg>
-                                            <div class="newsFeed__commentSize">25</div>
-                                        </div>
-                                        <div class="newsFeed__time">16:03</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="newsFeed__item">
-                                <div class="newsFeed__image"> <a href=""><img src="./images/upload/3.webp" alt=""></a></div>
-                                <div class="newsFeed__body">
-                                    <div class="newsFeed__name"><a href="">Майнинг биткоина: что ждет сектор в 2022 году?</a></div>
-                                    <div class="newsFeed__info">
-                                        <div class="newsFeed__comment">
-                                            <svg class="icon icon-comment newsFeed__commentIcon">
-                                                <use xlink:href="./images/sprite.svg#comment"></use>
-                                            </svg>
-                                            <div class="newsFeed__commentSize">25</div>
-                                        </div>
-                                        <div class="newsFeed__time">16:03</div>
-                                    </div>
-                                </div>
-                            </div>
+
+                                @endif
+
+                            @endforeach
+
                         </div>
                     </div>
                 </div>
                 <div class="module">
                     <h2 class="h2 module__title">Эксклюзив</h2>
-                    <div class="newsCard module"><a class="newsCard__image" href=""><img src="./images/upload/2.webp" alt=""/></a>
-                        <div class="newsCard__content">
-                            <div class="newsCard__title"><a href="">EuroSwap EDEX презентовал команду и сразу перешел в основную фазу развития</a></div>
-                            <div class="newsCard__info">
-                                <div class="newsCard__date">5 января 2022</div>
-                                <div class="newsCard__category">Обзоры</div>
-                                <div class="newsCard__comment">
-                                    <svg class="icon icon-comment newsCard__commentIcon">
-                                        <use xlink:href="./images/sprite.svg#comment"></use>
-                                    </svg>
-                                    <div class="newsCard__commentSize">25</div>
+
+                    @foreach($exclPosts as $exPost)
+
+                        <div class="newsCard module"><a class="newsCard__image" href="{{ route('post-show', [$exPost->category->name, $exPost->slug]) }}"><img src="/{{ $exPost->image }}" alt=""/></a>
+                            <div class="newsCard__content">
+                                <div class="newsCard__title"><a href="{{ route('post-show', [$exPost->category->name, $exPost->slug]) }}">{{ $exPost->title }}</a></div>
+                                <div class="newsCard__info">
+                                    <div class="newsCard__date">{{ $exPost->date_formatted }}</div>
+                                    <div class="newsCard__category">{{ $exPost->category->name_rus }}</div>
+                                    <div class="newsCard__comment">
+                                        <svg class="icon icon-comment newsCard__commentIcon">
+                                            <use xlink:href="./images/sprite.svg#comment"></use>
+                                        </svg>
+                                        <div class="newsCard__commentSize">12</div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="newsCard__text">Европейский криптопроект EuroSwap EDEX, который в ноябре провел токенсейл EDEX, переходит в основную фазу развития. Напомним, что на старте развития проект привлек огромное внимание благодаря перспективной идее и практичной технологии.</div>
-                            <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="">Читать полностью </a>
-                                <div class="newsCard__timeRead">
-                                    <svg class="icon icon-time newsCard__timeReadIcon">
-                                        <use xlink:href="./images/sprite.svg#time"></use>
-                                    </svg>
-                                    <div class="newsCard__timeReadText">Время на прочтение 15 мин.</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="newsCard module"><a class="newsCard__image" href=""><img src="./images/upload/3.webp" alt=""/></a>
-                        <div class="newsCard__content">
-                            <div class="newsCard__title"><a href="">Смена тренда или ложный отскок: при каких условиях биткоин вырастет?</a></div>
-                            <div class="newsCard__info">
-                                <div class="newsCard__date">5 января 2022</div>
-                                <div class="newsCard__category">Обзоры</div>
-                                <div class="newsCard__comment">
-                                    <svg class="icon icon-comment newsCard__commentIcon">
-                                        <use xlink:href="./images/sprite.svg#comment"></use>
-                                    </svg>
-                                    <div class="newsCard__commentSize">12</div>
-                                </div>
-                            </div>
-                            <div class="newsCard__text">Европейский криптопроект EuroSwap EDEX, который в ноябре провел токенсейл EDEX, переходит в основную фазу развития. Напомним, что на старте развития проект привлек огромное внимание благодаря перспективной идее и практичной технологии.</div>
-                            <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="">Читать полностью </a>
-                                <div class="newsCard__timeRead">
-                                    <svg class="icon icon-time newsCard__timeReadIcon">
-                                        <use xlink:href="./images/sprite.svg#time"></use>
-                                    </svg>
-                                    <div class="newsCard__timeReadText">Время на прочтение 7 мин.</div>
+                                <div class="newsCard__text">{{ $exPost->descr }}</div>
+                                <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="{{ route('post-show', [$exPost->category->name, $exPost->slug]) }}">Читать полностью </a>
+                                    <div class="newsCard__timeRead">
+                                        <svg class="icon icon-time newsCard__timeReadIcon">
+                                            <use xlink:href="./images/sprite.svg#time"></use>
+                                        </svg>
+                                        <div class="newsCard__timeReadText">Время на прочтение 7 мин.</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="newsCard module"><a class="newsCard__image" href=""><img src="./images/upload/4.webp" alt=""/></a>
-                        <div class="newsCard__content">
-                            <div class="newsCard__title"><a href="">EuroSwap EDEX презентовал команду и сразу перешел в основную фазу развития</a></div>
-                            <div class="newsCard__info">
-                                <div class="newsCard__date">5 января 2022</div>
-                                <div class="newsCard__category">Обзоры</div>
-                                <div class="newsCard__comment hot">
-                                    <svg class="icon icon-fire newsCard__commentIcon">
-                                        <use xlink:href="./images/sprite.svg#fire"></use>
-                                    </svg>
-                                    <div class="newsCard__commentSize">90</div>
-                                </div>
-                            </div>
-                            <div class="newsCard__text">Европейский криптопроект EuroSwap EDEX, который в ноябре провел токенсейл EDEX, переходит в основную фазу развития. Напомним, что на старте развития проект привлек огромное внимание благодаря перспективной идее и практичной технологии.</div>
-                            <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="">Читать полностью </a>
-                                <div class="newsCard__timeRead">
-                                    <svg class="icon icon-time newsCard__timeReadIcon">
-                                        <use xlink:href="./images/sprite.svg#time"></use>
-                                    </svg>
-                                    <div class="newsCard__timeReadText">Время на прочтение 15 мин.</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="newsCard module"><a class="newsCard__image" href=""><img src="./images/upload/5.webp" alt=""/></a>
-                        <div class="newsCard__content">
-                            <div class="newsCard__title"><a href="">Смена тренда или ложный отскок: при каких условиях биткоин вырастет?</a></div>
-                            <div class="newsCard__info">
-                                <div class="newsCard__date">5 января 2022</div>
-                                <div class="newsCard__category">Обзоры</div>
-                                <div class="newsCard__comment">
-                                    <svg class="icon icon-comment newsCard__commentIcon">
-                                        <use xlink:href="./images/sprite.svg#comment"></use>
-                                    </svg>
-                                    <div class="newsCard__commentSize">12</div>
-                                </div>
-                            </div>
-                            <div class="newsCard__text">Европейский криптопроект EuroSwap EDEX, который в ноябре провел токенсейл EDEX, переходит в основную фазу развития. Напомним, что на старте развития проект привлек огромное внимание благодаря перспективной идее и практичной технологии.</div>
-                            <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="">Читать полностью </a>
-                                <div class="newsCard__timeRead">
-                                    <svg class="icon icon-time newsCard__timeReadIcon">
-                                        <use xlink:href="./images/sprite.svg#time"></use>
-                                    </svg>
-                                    <div class="newsCard__timeReadText">Время на прочтение 7 мин.</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+                    @endforeach
+
                 </div>
                 <div class="module">
                     <div class="newsSwiper swiper-container">
@@ -271,102 +164,29 @@
                             </svg>
                         </div>
                         <div class="swiper-wrapper">
-                            <div class="cardFill newsSwiper__slide swiper-slide"><a class="cardFill__link" href=""> <img class="cardFill__image" src="./images/upload/4.webp" alt=""/>
-                                    <div class="cardFill__frame">
-                                        <div class="cardFill__top">
-                                            <div class="cardFill__comment">
-                                                <svg class="icon icon-comment cardFill__commentIcon">
-                                                    <use xlink:href="./images/sprite.svg#comment"></use>
-                                                </svg>
-                                                <div class="cardFill__commentSize">12</div>
+
+                            @foreach($exclSliderPosts as $slPost)
+
+                                <div class="cardFill newsSwiper__slide swiper-slide"><a class="cardFill__link" href="{{ route('post-show', [$slPost->category->name, $slPost->slug]) }}"> <img class="cardFill__image" src="/{{ $slPost->image }}" alt=""/>
+                                        <div class="cardFill__frame">
+                                            <div class="cardFill__top">
+                                                <div class="cardFill__comment">
+                                                    <svg class="icon icon-comment cardFill__commentIcon">
+                                                        <use xlink:href="./images/sprite.svg#comment"></use>
+                                                    </svg>
+                                                    <div class="cardFill__commentSize">12</div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="cardFill__bottom">
-                                            <div class="cardFill__date"> 4 часа назад &bull; Статьи
+                                            <div class="cardFill__bottom">
+                                                <div class="cardFill__date"> {{ trans_choice("main.hours_number", $carbon::now()->copy()->diffInHours($slPost->date_time)) }} назад &bull; {{ $slPost->category->name_rus }}
+                                                </div>
+                                                <div class="cardFill__name">{{ $slPost->title }}</div>
                                             </div>
-                                            <div class="cardFill__name">Рынок NFT после хайпа продолжает развиваться</div>
-                                        </div>
-                                    </div></a></div>
-                            <div class="cardFill newsSwiper__slide swiper-slide"><a class="cardFill__link" href=""> <img class="cardFill__image" src="./images/upload/5.webp" alt=""/>
-                                    <div class="cardFill__frame">
-                                        <div class="cardFill__top">
-                                            <div class="cardFill__comment">
-                                                <svg class="icon icon-comment cardFill__commentIcon">
-                                                    <use xlink:href="./images/sprite.svg#comment"></use>
-                                                </svg>
-                                                <div class="cardFill__commentSize">78</div>
-                                            </div>
-                                        </div>
-                                        <div class="cardFill__bottom">
-                                            <div class="cardFill__date"> 4 часа назад &bull; Статьи
-                                            </div>
-                                            <div class="cardFill__name">Майнинг биткоина: что ждет сектор в 2022 году?</div>
-                                        </div>
-                                    </div></a></div>
-                            <div class="cardFill newsSwiper__slide swiper-slide"><a class="cardFill__link" href=""> <img class="cardFill__image" src="./images/upload/6.webp" alt=""/>
-                                    <div class="cardFill__frame">
-                                        <div class="cardFill__top">
-                                            <div class="cardFill__comment">
-                                                <svg class="icon icon-comment cardFill__commentIcon">
-                                                    <use xlink:href="./images/sprite.svg#comment"></use>
-                                                </svg>
-                                                <div class="cardFill__commentSize">10</div>
-                                            </div>
-                                        </div>
-                                        <div class="cardFill__bottom">
-                                            <div class="cardFill__date"> 4 часа назад &bull; Статьи
-                                            </div>
-                                            <div class="cardFill__name">Билеты будущего, или Как NFT решает главную проблему билетного рынка</div>
-                                        </div>
-                                    </div></a></div>
-                            <div class="cardFill newsSwiper__slide swiper-slide"><a class="cardFill__link" href=""> <img class="cardFill__image" src="./images/upload/3.webp" alt=""/>
-                                    <div class="cardFill__frame">
-                                        <div class="cardFill__top">
-                                            <div class="cardFill__comment">
-                                                <svg class="icon icon-comment cardFill__commentIcon">
-                                                    <use xlink:href="./images/sprite.svg#comment"></use>
-                                                </svg>
-                                                <div class="cardFill__commentSize">12</div>
-                                            </div>
-                                        </div>
-                                        <div class="cardFill__bottom">
-                                            <div class="cardFill__date"> 4 часа назад &bull; Статьи
-                                            </div>
-                                            <div class="cardFill__name">Рынок NFT после хайпа продолжает развиваться</div>
-                                        </div>
-                                    </div></a></div>
-                            <div class="cardFill newsSwiper__slide swiper-slide"><a class="cardFill__link" href=""> <img class="cardFill__image" src="./images/upload/2.webp" alt=""/>
-                                    <div class="cardFill__frame">
-                                        <div class="cardFill__top">
-                                            <div class="cardFill__comment">
-                                                <svg class="icon icon-comment cardFill__commentIcon">
-                                                    <use xlink:href="./images/sprite.svg#comment"></use>
-                                                </svg>
-                                                <div class="cardFill__commentSize">78</div>
-                                            </div>
-                                        </div>
-                                        <div class="cardFill__bottom">
-                                            <div class="cardFill__date"> 4 часа назад &bull; Статьи
-                                            </div>
-                                            <div class="cardFill__name">Майнинг биткоина: что ждет сектор в 2022 году?</div>
-                                        </div>
-                                    </div></a></div>
-                            <div class="cardFill newsSwiper__slide swiper-slide"><a class="cardFill__link" href=""> <img class="cardFill__image" src="./images/upload/1.webp" alt=""/>
-                                    <div class="cardFill__frame">
-                                        <div class="cardFill__top">
-                                            <div class="cardFill__comment">
-                                                <svg class="icon icon-comment cardFill__commentIcon">
-                                                    <use xlink:href="./images/sprite.svg#comment"></use>
-                                                </svg>
-                                                <div class="cardFill__commentSize">10</div>
-                                            </div>
-                                        </div>
-                                        <div class="cardFill__bottom">
-                                            <div class="cardFill__date"> 4 часа назад &bull; Статьи
-                                            </div>
-                                            <div class="cardFill__name">Билеты будущего, или Как NFT решает главную проблему билетного рынка</div>
-                                        </div>
-                                    </div></a></div>
+                                        </div></a>
+                                </div>
+
+                            @endforeach
+
                         </div>
                     </div>
                 </div>
@@ -594,15 +414,11 @@
         </div>
     </div>
 
-
-
-
-
     <div class="gray-bg module module--big-space">
         <div class="container">
             <div class="youtube module">
                 <div class="youtube__header"> <img class="youtube__headerIcon" src="./images/youtube/youtube.svg" alt="">
-                    <div class="youtube__title">Наш YouTube канал</div><a class="btn btn--white youtube__channel" href="">Перейти на канал</a>
+                    <div class="youtube__title">Наш YouTube канал</div><a class="btn btn--white youtube__channel" href="https://www.youtube.com/c/cartons" target="_blank">Перейти на канал</a>
                     <div class="youtube__navigation">
                         <div class="youtube__nav youtube__nav--prev">
                             <svg class="icon icon-prev ">
@@ -618,167 +434,57 @@
                 </div>
                 <div class="youtube__swiper swiper-container">
                     <div class="swiper-wrapper">
-                        <div class="youtube__item swiper-slide"><a href="">
-                                <div class="play">
-                                    <div class="play__icon">
-                                        <svg class="icon icon-play ">
-                                            <use xlink:href="./images/sprite.svg#play"></use>
-                                        </svg>
-                                    </div>
-                                    <div class="play__text">Посмотреть<br>на YouTube</div>
-                                </div><img class="youtube__preview" src="./images/upload/7.webp" alt=""></a></div>
-                        <div class="youtube__item swiper-slide"><a href="">
-                                <div class="play">
-                                    <div class="play__icon">
-                                        <svg class="icon icon-play ">
-                                            <use xlink:href="./images/sprite.svg#play"></use>
-                                        </svg>
-                                    </div>
-                                    <div class="play__text">Посмотреть<br>на YouTube</div>
-                                </div><img class="youtube__preview" src="./images/upload/8.webp" alt=""></a></div>
-                        <div class="youtube__item swiper-slide"><a href="">
-                                <div class="play">
-                                    <div class="play__icon">
-                                        <svg class="icon icon-play ">
-                                            <use xlink:href="./images/sprite.svg#play"></use>
-                                        </svg>
-                                    </div>
-                                    <div class="play__text">Посмотреть<br>на YouTube</div>
-                                </div><img class="youtube__preview" src="./images/upload/3.webp" alt=""></a></div>
-                        <div class="youtube__item swiper-slide"><a href="">
-                                <div class="play">
-                                    <div class="play__icon">
-                                        <svg class="icon icon-play ">
-                                            <use xlink:href="./images/sprite.svg#play"></use>
-                                        </svg>
-                                    </div>
-                                    <div class="play__text">Посмотреть<br>на YouTube</div>
-                                </div><img class="youtube__preview" src="./images/upload/4.webp" alt=""></a></div>
+
+                        @foreach($youTubeLinks as $link)
+
+                            <div class="youtube__item swiper-slide"><a href="{{ $link->url }}" target="_blank">
+                                    <div class="play">
+                                        <div class="play__icon">
+                                            <svg class="icon icon-play ">
+                                                <use xlink:href="./images/sprite.svg#play"></use>
+                                            </svg>
+                                        </div>
+                                        <div class="play__text">Посмотреть<br>на YouTube</div>
+                                    </div><img class="youtube__preview" src="/{{ $link->image }}" alt=""></a>
+                            </div>
+
+                        @endforeach
+
                     </div>
                 </div>
             </div>
             <h2 class="h2 module__title">Популярное за эту неделю</h2>
             <div class="two-columns">
-                <div class="newsCard">
-                    <div class="newsCard__content">
-                        <div class="newsCard__title"><a href="">EuroSwap EDEX презентовал команду и сразу перешел в основную фазу развития</a></div>
-                        <div class="newsCard__info">
-                            <div class="newsCard__date">5 января 2022</div>
-                            <div class="newsCard__category">Обзоры</div>
-                            <div class="newsCard__comment">
-                                <svg class="icon icon-comment newsCard__commentIcon">
-                                    <use xlink:href="./images/sprite.svg#comment"></use>
-                                </svg>
-                                <div class="newsCard__commentSize">25</div>
+
+                @foreach($mostViewedPosts as $vPost)
+
+                    <div class="newsCard">
+                        <div class="newsCard__content">
+                            <div class="newsCard__title"><a href="{{ route('post-show', [$vPost->category->name, $vPost->slug]) }}">{{ $vPost->title }}</a></div>
+                            <div class="newsCard__info">
+                                <div class="newsCard__date">{{ $vPost->date_formatted }}</div>
+                                <div class="newsCard__category">{{ $vPost->category->name_rus }}</div>
+                                <div class="newsCard__comment">
+                                    <svg class="icon icon-comment newsCard__commentIcon">
+                                        <use xlink:href="./images/sprite.svg#comment"></use>
+                                    </svg>
+                                    <div class="newsCard__commentSize">25</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="newsCard__text">Европейский криптопроект EuroSwap EDEX, который в ноябре провел токенсейл EDEX, переходит в основную фазу развития. Напомним, что на старте развития проект привлек огромное внимание благодаря перспективной идее и практичной технологии.</div>
-                        <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="">Читать полностью </a>
-                            <div class="newsCard__timeRead">
-                                <svg class="icon icon-time newsCard__timeReadIcon">
-                                    <use xlink:href="./images/sprite.svg#time"></use>
-                                </svg>
-                                <div class="newsCard__timeReadText">Время на прочтение 15 мин.</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="newsCard">
-                    <div class="newsCard__content">
-                        <div class="newsCard__title"><a href="">Смена тренда или ложный отскок: при каких условиях биткоин вырастет?</a></div>
-                        <div class="newsCard__info">
-                            <div class="newsCard__date">5 января 2022</div>
-                            <div class="newsCard__category">Обзоры</div>
-                            <div class="newsCard__comment">
-                                <svg class="icon icon-comment newsCard__commentIcon">
-                                    <use xlink:href="./images/sprite.svg#comment"></use>
-                                </svg>
-                                <div class="newsCard__commentSize">12</div>
-                            </div>
-                        </div>
-                        <div class="newsCard__text">Европейский криптопроект EuroSwap EDEX, который в ноябре провел токенсейл EDEX, переходит в основную фазу развития. Напомним, что на старте развития проект привлек огромное внимание благодаря перспективной идее и практичной технологии.</div>
-                        <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="">Читать полностью </a>
-                            <div class="newsCard__timeRead">
-                                <svg class="icon icon-time newsCard__timeReadIcon">
-                                    <use xlink:href="./images/sprite.svg#time"></use>
-                                </svg>
-                                <div class="newsCard__timeReadText">Время на прочтение 7 мин.</div>
+                            <div class="newsCard__text">{{ $vPost->descr }}</div>
+                            <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="{{ route('post-show', [$vPost->category->name, $vPost->slug]) }}">Читать полностью </a>
+                                <div class="newsCard__timeRead">
+                                    <svg class="icon icon-time newsCard__timeReadIcon">
+                                        <use xlink:href="./images/sprite.svg#time"></use>
+                                    </svg>
+                                    <div class="newsCard__timeReadText">Время на прочтение 15 мин.</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="newsCard">
-                    <div class="newsCard__content">
-                        <div class="newsCard__title"><a href="">EuroSwap EDEX презентовал команду и сразу перешел в основную фазу развития</a></div>
-                        <div class="newsCard__info">
-                            <div class="newsCard__date">5 января 2022</div>
-                            <div class="newsCard__category">Обзоры</div>
-                            <div class="newsCard__comment hot">
-                                <svg class="icon icon-fire newsCard__commentIcon">
-                                    <use xlink:href="./images/sprite.svg#fire"></use>
-                                </svg>
-                                <div class="newsCard__commentSize">90</div>
-                            </div>
-                        </div>
-                        <div class="newsCard__text">Европейский криптопроект EuroSwap EDEX, который в ноябре провел токенсейл EDEX, переходит в основную фазу развития. Напомним, что на старте развития проект привлек огромное внимание благодаря перспективной идее и практичной технологии.</div>
-                        <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="">Читать полностью </a>
-                            <div class="newsCard__timeRead">
-                                <svg class="icon icon-time newsCard__timeReadIcon">
-                                    <use xlink:href="./images/sprite.svg#time"></use>
-                                </svg>
-                                <div class="newsCard__timeReadText">Время на прочтение 15 мин.</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="newsCard">
-                    <div class="newsCard__content">
-                        <div class="newsCard__title"><a href="">Смена тренда или ложный отскок: при каких условиях биткоин вырастет?</a></div>
-                        <div class="newsCard__info">
-                            <div class="newsCard__date">5 января 2022</div>
-                            <div class="newsCard__category">Обзоры</div>
-                            <div class="newsCard__comment">
-                                <svg class="icon icon-comment newsCard__commentIcon">
-                                    <use xlink:href="./images/sprite.svg#comment"></use>
-                                </svg>
-                                <div class="newsCard__commentSize">12</div>
-                            </div>
-                        </div>
-                        <div class="newsCard__text">Европейский криптопроект EuroSwap EDEX, который в ноябре провел токенсейл EDEX, переходит в основную фазу развития. Напомним, что на старте развития проект привлек огромное внимание благодаря перспективной идее и практичной технологии.</div>
-                        <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="">Читать полностью </a>
-                            <div class="newsCard__timeRead">
-                                <svg class="icon icon-time newsCard__timeReadIcon">
-                                    <use xlink:href="./images/sprite.svg#time"></use>
-                                </svg>
-                                <div class="newsCard__timeReadText">Время на прочтение 7 мин.</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="newsCard">
-                    <div class="newsCard__content">
-                        <div class="newsCard__title"><a href="">Смена тренда или ложный отскок: при каких условиях биткоин вырастет?</a></div>
-                        <div class="newsCard__info">
-                            <div class="newsCard__date">5 января 2022</div>
-                            <div class="newsCard__category">Обзоры</div>
-                            <div class="newsCard__comment">
-                                <svg class="icon icon-comment newsCard__commentIcon">
-                                    <use xlink:href="./images/sprite.svg#comment"></use>
-                                </svg>
-                                <div class="newsCard__commentSize">12</div>
-                            </div>
-                        </div>
-                        <div class="newsCard__text">Европейский криптопроект EuroSwap EDEX, который в ноябре провел токенсейл EDEX, переходит в основную фазу развития. Напомним, что на старте развития проект привлек огромное внимание благодаря перспективной идее и практичной технологии.</div>
-                        <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="">Читать полностью </a>
-                            <div class="newsCard__timeRead">
-                                <svg class="icon icon-time newsCard__timeReadIcon">
-                                    <use xlink:href="./images/sprite.svg#time"></use>
-                                </svg>
-                                <div class="newsCard__timeReadText">Время на прочтение 7 мин.</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+                @endforeach
+
                 <div class="subscribe subscribeBox">
                     <form action="" id="home_subs_form">
                         <div class="subscribe__row">

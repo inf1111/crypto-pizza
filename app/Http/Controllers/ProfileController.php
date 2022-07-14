@@ -17,6 +17,15 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function bookmarksIndex()
+    {
+        $bookmarkedPosts = Auth::user()->bookmarkedPosts;
+
+        return view("profile-bookmarks", [
+            "bookmarkedPosts" => $bookmarkedPosts
+        ]);
+    }
+
     public function updateProfile()
     {
         //dd(request()->all());

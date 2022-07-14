@@ -2,8 +2,10 @@
 
 namespace App\Console;
 
+use App\View;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Carbon;
 
 class Kernel extends ConsoleKernel
 {
@@ -24,7 +26,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            View::where('date', '<', Carbon::now()->subDays(7))->delete();
+        })->cron('0 10 * * *'); // daily at 10.00
     }
 
     /**

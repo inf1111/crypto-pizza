@@ -15,3 +15,11 @@
     background-color: #d1e7dd;
     border: 1px solid #badbcc;
 }
+
+.profile-notify--empty.wide {
+    width: 100%;
+}
+
+.cardFill.themeOfTheDay, .cardFill.editorChoice {
+    width: 610px;
+}

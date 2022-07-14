@@ -20,10 +20,12 @@
         </div>
         <div class="columns">
             <div class="share share--left">
-                <div class="share__item"><a class="share__link bookmark" href="">
-                        <svg class="icon icon-bookmark ">
+                @auth
+                <div class="share__item"><a class="share__link bookmark @if($post->bookmarked) is-active @endif" href="{{ route("toggle-bookmark", ["post_id" => $post->id]) }}">
+                        <svg class="icon icon-bookmark @if($post->bookmarked) active @endif">
                             <use xlink:href="/images/sprite.svg#bookmark"></use>
                         </svg></a></div>
+                @endauth
                 <div class="share__item"><a class="share__link" href="https://twitter.com/intent/tweet?text={{ \Illuminate\Support\Str::limit($post->text, 279) }}&url={{ url()->current() }}" target="_blank"><img src="/images/share/twitter.svg" alt=""></a></div>
                 <div class="share__item"><a class="share__link" href="https://www.facebook.com/sharer/sharer.php?u={{ url()->current() }}" target="_blank"><img src="/images/share/facebook.svg" alt=""></a></div>
                 <div class="share__item"><a class="share__link" href="https://t.me/share/url?url={{ url()->current() }}" target="_blank"><img src="/images/share/telegram.svg" alt=""></a></div>
@@ -61,26 +63,39 @@
                     <div class="share__social">
                         <div class="share__social-text">Поделиться<br>новостью:</div>
                         <div class="share__social-list">
-                            <div class="share__item"> <a class="share__link" href=""><img src="/images/share/twitter.svg" alt=""></a></div>
-                            <div class="share__item"><a class="share__link" href=""><img src="/images/share/facebook.svg" alt=""></a></div>
-                            <div class="share__item"><a class="share__link" href=""><img src="/images/share/telegram.svg" alt=""></a></div>
-                            <div class="share__item"><a class="share__link" href=""><img src="/images/share/vk.svg" alt=""></a></div>
+                            <div class="share__item"> <a class="share__link" href="https://twitter.com/intent/tweet?text={{ \Illuminate\Support\Str::limit($post->text, 279) }}&url={{ url()->current() }}" target="_blank"><img src="/images/share/twitter.svg" alt=""></a></div>
+
+                            <div class="share__item"><a class="share__link" href="https://www.facebook.com/sharer/sharer.php?u={{ url()->current() }}" target="_blank"><img src="/images/share/facebook.svg" alt=""></a></div>
+
+                            <div class="share__item"><a class="share__link" href="https://t.me/share/url?url={{ url()->current() }}" target="_blank"><img src="/images/share/telegram.svg" alt=""></a></div>
+
+                            <div class="share__item"><a class="share__link" href="https://vk.com/share.php?url={{ url()->current() }}" target="_blank"><img src="/images/share/vk.svg" alt=""></a></div>
                         </div>
                     </div>
+                    @auth
+
                     <div class="share__bookmark">
                         <div class="share__bookmark-text">Добавить в закладки</div>
-                        <div class="share__item"> <a class="share__link bookmark" href="">
-                                <svg class="icon icon-bookmark ">
-                                    <use xlink:href="/images/sprite.svg#bookmark"></use>
-                                </svg></a></div>
+                        <div class="share__item"> <a class="share__link bookmark @if($post->bookmarked) is-active @endif" href="{{ route("toggle-bookmark", ["post_id" => $post->id]) }}">
+                                <span >
+                                    <svg class="icon icon-bookmark">
+                                        <use xlink:href="/images/sprite.svg#bookmark"></use>
+                                    </svg>
+                                </span>
+                            </a></div>
+
                     </div>
+
+
                     <div class="share__fav">
                         <div class="share__fav-text">Лайкните статью?</div>
-                        <div class="share__item"> <a class="share__link fav" href="">
+                        <div class="share__item"> <a class="share__link fav @if($post->liked) is-active @endif" href="{{ route("toggle-like-post", ["post_id" => $post->id]) }}">
                                 <svg class="icon icon-hearth ">
                                     <use xlink:href="/images/sprite.svg#hearth"></use>
                                 </svg></a></div>
                     </div>
+
+                    @endauth
                 </div>
                 <div class="post-list module">
                     <div class="post-list__title">Статьи по теме</div>
@@ -436,12 +451,17 @@
                         <div class="youtube__title">Наш YouTube канал</div>
                     </div>
                     <div class="youtube__list">
-                        <div class="youtube__el"><a href=""><img class="youtube__preview" src="/images/upload/8.webp" alt="">
-                                <div class="youtube__text">Дайджест новостей крипторынка за 2021 год</div></a></div>
-                        <div class="youtube__el"><a href=""><img class="youtube__preview" src="/images/upload/3.webp" alt="">
-                                <div class="youtube__text">Главные новости крипторынка за сентябрь...</div></a></div>
+
+                        @foreach($youTubeLinks as $link)
+
+                            <div class="youtube__el"><a href="{{ $link->url }}" target="_blank"><img class="youtube__preview" src="/{{ $link->image }}" alt="">
+                                    <div class="youtube__text">{{ $link->title }}</div></a>
+                            </div>
+
+                        @endforeach
+
                     </div>
-                    <div class="youtube__more"> <a href="">Перейти на канал </a></div>
+                    <div class="youtube__more"> <a href="https://www.youtube.com/c/cartons" target="_blank">Перейти на канал </a></div>
                 </div>
             </aside>
         </div>

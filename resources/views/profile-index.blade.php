@@ -8,7 +8,7 @@
             <div class="breadcrumbs__item"><span>Профиль пользователя</span></div>
         </div>
         <h1 class="page-title">Мой профиль</h1>
-        <div class="columns">
+        <div class="columns ai-start fld-column-md">
             <div class="profile-form">
 
                 <form action="{{ route("profile-update") }}" method="POST">
@@ -104,31 +104,8 @@
                 </form>
 
             </div>
-            <aside class="profile-menu">
-                <ul class="profile-menu__list">
-                    <li class="profile-menu__item"> <a class="profile-menu__link is-active" href="{{ route("profile-index") }}"><span class="profile-menu__icon">
-                      <svg class="icon icon-user ">
-                        <use xlink:href="./images/sprite.svg#user"></use>
-                      </svg></span><span class="profile-menu__text">мой профиль </span></a></li>
-                    {{--<li class="profile-menu__item"> <a class="profile-menu__link" href="./profile-comments.html"><span class="profile-menu__icon">
-                      <svg class="icon icon-chat ">
-                        <use xlink:href="./images/sprite.svg#chat"></use>
-                      </svg></span><span class="profile-menu__text">мои комментарии<sup>176</sup></span></a></li>
-                    <li class="profile-menu__item"> <a class="profile-menu__link" href="./profile-notify.html"><span class="profile-menu__icon">
-                      <svg class="icon icon-notify ">
-                        <use xlink:href="./images/sprite.svg#notify"></use>
-                      </svg><span>12</span></span><span class="profile-menu__text">оповещения</span></a></li>--}}
-                    <li class="profile-menu__item"> <a class="profile-menu__link" href="./profile-bookmarks.html"><span class="profile-menu__icon">
-                      <svg class="icon icon-bookmark ">
-                        <use xlink:href="./images/sprite.svg#bookmark"></use>
-                      </svg></span><span class="profile-menu__text">мои закладки<sup>7</sup></span></a></li>
-                    <li class="profile-menu__item"> <a class="profile-menu__link" href="{{ route("logout") }}"><span class="profile-menu__icon">
-                      <svg class="icon icon-exit ">
-                        <use xlink:href="./images/sprite.svg#exit"></use>
-                      </svg></span><span class="profile-menu__text">Выход </span></a></li>
-                </ul>
 
-            </aside>
+            @include("includes.profile-menu")
 
         </div>
 

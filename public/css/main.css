@@ -1837,7 +1837,7 @@ body.is-animate .overlay {
   width: 100%;
 }
 .newsSwiper__slide {
-  height: 314px;
+  height: 314px !important; /* mkomkov добавил important*/
 }
 .newsSwiper__navigation {
   display: flex;
