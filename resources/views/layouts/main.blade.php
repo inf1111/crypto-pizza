@@ -541,9 +541,10 @@
     <img id="" src="/images/loading.gif" alt="" style="width:30px; height:30px">
 </div>
 
+@yield('scripts')
+
 <script src="/js/main.js"></script>
 <script src="/js/simplebar.js"></script>
-
 
 <script src="/js/subscribe.js"></script>
 <script src="/js/modals.js"></script>

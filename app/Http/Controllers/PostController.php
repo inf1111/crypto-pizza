@@ -9,6 +9,7 @@ use App\Post;
 use App\View;
 use App\YoutubeLink;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Searchable\Search;
@@ -83,6 +84,8 @@ class PostController extends Controller
         $youTubeLinks = YoutubeLink::orderBy('date_time', 'desc')->take(10)->get();
         $recentNews = Post::whereIn('category_id', [1,8])->orderBy('date_time', 'desc')->take(10)->get();
 
+        // get most viewed posts
+
         $mostViewedPostsIds = DB::table('views')
             ->select('post_id', DB::raw('count(1) as quantity'))
             ->groupBy('post_id')
@@ -106,7 +109,8 @@ class PostController extends Controller
             "exclPosts" => $exclPosts,
             "youTubeLinks" => $youTubeLinks,
             "recentNews" => $recentNews,
-            "mostViewedPosts" => $mostViewedPosts
+            "mostViewedPosts" => $mostViewedPosts,
+            "missedPosts" => $this->getMissedPosts()
         ]);
     }
 
@@ -135,14 +139,18 @@ class PostController extends Controller
             'date' => now()
         ]);
 
+        Cookie::queue('p_' . $post->id, $post->id, 1000);
+
         return view("post", [
             'post' => $post,
-            'youTubeLinks' => $youTubeLinks
+            'youTubeLinks' => $youTubeLinks,
+            'missedPosts' => $this->getMissedPosts()
         ]);
     }
 
     public function search()
     {
+        $youTubeLinks = YoutubeLink::orderBy('date_time', 'desc')->take(2)->get();
 
         if (request()->has("q") && request()->q != "") {
 
@@ -155,7 +163,9 @@ class PostController extends Controller
             return view("search", [
                 'results' => $resultsPaginated,
                 'total' => $resultsNotPaginated->count(),
-                'q' => request()->q
+                'q' => request()->q,
+
+                'youTubeLinks' => $youTubeLinks,
             ]);
 
         }
@@ -163,15 +173,17 @@ class PostController extends Controller
 
             return view("search", [
                 'results' => [],
-                'total' => 0
+                'total' => 0,
+
+                'youTubeLinks' => $youTubeLinks,
             ]);
 
         }
-
     }
 
-    /* Пейджинация результатов поиска. Потребовалась, т.к. пакет spatie/laravel-searchable не предоставляет возможсность пейджинации результатов поиска */
-
+    /**
+     * Пейджинация результатов поиска. Потребовалась, т.к. пакет spatie/laravel-searchable не предоставляет возможсность пейджинации результатов поиска
+     */
     public function paginate($items, $perPage = 10, $page = null, $options = [])
     {
         $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
@@ -179,6 +191,48 @@ class PostController extends Controller
         $x = new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
         $x->withPath('search');
         return $x;
+    }
+
+    /**
+     * Данные для блока "Возможно вы пропустили" - посты, которые пользователь не читал (сделано с пом. куки)
+     */
+    private function getMissedPosts()
+    {
+        $readPosts = [];
+
+        foreach (request()->cookie() as $key => $val) {
+
+            if (substr($key, 0, 2) === "p_") {
+                $readPosts[] = $val;
+            }
+
+        }
+
+        return Post::whereNotIn('id', $readPosts)->limit(4)->get();
+    }
+
+    /**
+     * Загрузка постов при клике на кнопку "Показать еще"
+     */
+    public function loadMore()
+    {
+        $clicksQuantity = (int) request()->clicksQuantity;
+
+        $readPosts = [];
+
+        foreach (request()->cookie() as $key => $val) {
+
+            if (substr($key, 0, 2) === "p_") {
+                $readPosts[] = $val;
+            }
+
+        }
+
+        $view = view('includes.load-more', [
+            'missedPosts' => Post::whereNotIn('id', $readPosts)->limit(4 + $clicksQuantity * 4)->get(),
+            'showLoadMoreBtn' => ((4 + $clicksQuantity * 4) >= Post::whereNotIn('id', $readPosts)->count() ) ? false : true,
+        ]);
+        return $view->render();
     }
 
 }
