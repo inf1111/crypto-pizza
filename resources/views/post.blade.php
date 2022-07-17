@@ -1,3 +1,5 @@
+@inject('carbon', '\Illuminate\Support\Carbon')
+
 @extends("layouts.main")
 @section("meta")
     <title>{{ $post->title }}</title>
@@ -43,14 +45,14 @@
                                     <use xlink:href="/images/sprite.svg#fire"></use>
                                 </svg>
                                 <div class="post-info__commentText">120</div>
-                            </div>
-                            {{--<div class="post-info__bull"></div>
+                            </div>--}}
+                            <div class="post-info__bull"></div>
                             <div class="post-info__timeRead">
                                 <svg class="icon icon-time post-info__timeRead-icon">
                                     <use xlink:href="/images/sprite.svg#time"></use>
                                 </svg>
-                                <div class="post-info__timeRead-text">Время на прочтение 7 мин.</div>
-                            </div>--}}
+                                <div class="post-info__timeRead-text">Время на прочтение {{ $post->read_time }} мин.</div>
+                            </div>
                         </div>
                     </div>
                     <div class="post__content">
@@ -97,61 +99,33 @@
 
                     @endauth
                 </div>
-                {{--<div class="post-list module">
-                    <div class="post-list__title">Статьи по теме</div>
-                    <div class="post-list__list">
-                        <div class="post-list__item">
-                            <div class="post-list__date">10.02.22</div>
-                            <div class="post-list__name"> <a class="post-list__link" href="">Майнинг биткоина: что ждет сектор в 2022 году?</a></div>
-                            <div class="post-list__comment">
-                                <svg class="icon icon-comment ">
-                                    <use xlink:href="/images/sprite.svg#comment"></use>
-                                </svg>
-                                <div class="post-list__commentText">25</div>
-                            </div>
-                        </div>
-                        <div class="post-list__item">
-                            <div class="post-list__date">10.02.22</div>
-                            <div class="post-list__name"> <a class="post-list__link" href="">Через отрицание к принятию: как менялось отношение Visa к криптовалютам?</a></div>
-                            <div class="post-list__comment hot">
-                                <svg class="icon icon-fire post-list__commentIcon">
-                                    <use xlink:href="/images/sprite.svg#fire"></use>
-                                </svg>
-                                <div class="post-list__commentText">170</div>
-                            </div>
-                        </div>
-                        <div class="post-list__item">
-                            <div class="post-list__date">10.02.22</div>
-                            <div class="post-list__name"> <a class="post-list__link" href="">Чем обеспечен биткоин и может ли его цена упасть до нуля?</a></div>
-                            <div class="post-list__comment">
-                                <svg class="icon icon-comment ">
-                                    <use xlink:href="/images/sprite.svg#comment"></use>
-                                </svg>
-                                <div class="post-list__commentText">16</div>
-                            </div>
-                        </div>
-                        <div class="post-list__item">
-                            <div class="post-list__date">10.02.22</div>
-                            <div class="post-list__name"> <a class="post-list__link" href="">Владимир Путин допустил использование криптовалют в качестве инструмента накопления</a></div>
-                            <div class="post-list__comment">
-                                <svg class="icon icon-comment ">
-                                    <use xlink:href="/images/sprite.svg#comment"></use>
-                                </svg>
-                                <div class="post-list__commentText">2</div>
-                            </div>
-                        </div>
-                        <div class="post-list__item">
-                            <div class="post-list__date">10.02.22</div>
-                            <div class="post-list__name"> <a class="post-list__link" href="">Криптобум в Африке: чем вызван рост крипторынка на 1200%?</a></div>
-                            <div class="post-list__comment">
-                                <svg class="icon icon-comment ">
-                                    <use xlink:href="/images/sprite.svg#comment"></use>
-                                </svg>
-                                <div class="post-list__commentText">5</div>
-                            </div>
+
+                @isset($postsOnTopic)
+
+                    <div class="post-list module">
+                        <div class="post-list__title">Статьи по теме</div>
+                        <div class="post-list__list">
+
+                            @foreach($postsOnTopic as $post)
+
+                                <div class="post-list__item">
+                                    <div class="post-list__date">{{ $carbon::parse($post->date_time)->format('d.m.Y') }}</div>
+                                    <div class="post-list__name"> <a class="post-list__link" href="{{ route('post-show', [$post->category->name, $post->slug]) }}">{{ $post->title }}</a></div>
+                                    {{--<div class="post-list__comment">
+                                        <svg class="icon icon-comment ">
+                                            <use xlink:href="/images/sprite.svg#comment"></use>
+                                        </svg>
+                                        <div class="post-list__commentText">25</div>
+                                    </div>--}}
+                                </div>
+
+                            @endforeach
+
                         </div>
                     </div>
-                </div>--}}
+
+                @endisset
+
                 {{--<div class="post-comment module">
                     <div class="post-comment__title">Комментарии: <sup>0</sup></div>
                     <div class="post-comment__auth"><img class="post-comment__pizza" src="/images/pizza.webp" alt="">

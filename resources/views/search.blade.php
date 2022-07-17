@@ -40,26 +40,26 @@
 
                     @forelse ($results as $res)
 
-                        <div class="newsCard module"><a class="newsCard__image" href="{{ $res->url }}"><img src="/{{ $res->searchable->image }}" alt=""/></a>
+                        <div class="newsCard module"><a class="newsCard__image" href="{{ route('post-show', [$res->category->name, $res->slug]) }}"><img src="/{{ $res->image }}" alt=""/></a>
                             <div class="newsCard__content">
-                                <div class="newsCard__title"><a href="{{ $res->url }}">{{ $res->title }}</a></div>
+                                <div class="newsCard__title"><a href="{{ route('post-show', [$res->category->name, $res->slug]) }}">{{ $res->title }}</a></div>
                                 <div class="newsCard__info">
-                                    <div class="newsCard__date">{{ $res->searchable->date_formatted }}</div>
-                                    <div class="newsCard__category">{{ $res->searchable->category->name_rus }}</div>
-                                    <div class="newsCard__comment">
+                                    <div class="newsCard__date">{{ $res->date_formatted }}</div>
+                                    <div class="newsCard__category">{{ $res->category->name_rus }}</div>
+                                    {{--<div class="newsCard__comment">
                                         <svg class="icon icon-comment newsCard__commentIcon">
                                             <use xlink:href="/images/sprite.svg#comment"></use>
                                         </svg>
                                         <div class="newsCard__commentSize">25</div>
-                                    </div>
+                                    </div>--}}
                                 </div>
-                                <div class="newsCard__text">{{ $res->searchable->descr }}</div>
-                                <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="{{ $res->url }}">Читать полностью </a>
+                                <div class="newsCard__text">{{ $res->descr }}</div>
+                                <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="{{ route('post-show', [$res->category->name, $res->slug]) }}">Читать полностью </a>
                                     <div class="newsCard__timeRead">
                                         <svg class="icon icon-time newsCard__timeReadIcon">
                                             <use xlink:href="/images/sprite.svg#time"></use>
                                         </svg>
-                                        <div class="newsCard__timeReadText">Время на прочтение 15 мин.</div>
+                                        <div class="newsCard__timeReadText">Время на прочтение {{ $res->read_time }} мин.</div>
                                     </div>
                                 </div>
                             </div>

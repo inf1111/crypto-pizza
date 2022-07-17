@@ -15,41 +15,49 @@
                 <h1 class="page-title">{{ $category->name_rus }}</h1>
                 <div class="mainInfo module">
 
-                    <div class="cardFill themeOfTheDay"><a class="cardFill__link" href="{{ route('post-show', [$category->name, $posts[0]->slug]) }}"> <img class="cardFill__image" src="/{{ $posts[0]->image }}" alt=""/>
-                            <div class="cardFill__frame">
-                                <div class="cardFill__top">
-                                    {{--<div class="cardFill__comment hot">
-                                        <svg class="icon icon-fire cardFill__commentIcon">
-                                            <use xlink:href="/images/sprite.svg#fire"></use>
-                                        </svg>
-                                        <div class="cardFill__commentSize">154</div>
-                                    </div>--}}
-                                </div>
-                                <div class="cardFill__bottom">
-                                    <div class="cardFill__date"> {{ $posts[0]->date_formatted }} &bull; {{ $carbon::parse($posts[0]->date_time)->format('H:i') }} &bull; {{ $posts[0]->category->name_rus }}
-                                    </div>
-                                    <div class="cardFill__name">{{ $posts[0]->title }}</div>
-                                </div>
-                            </div></a>
-                    </div>
+                    @isset($posts[0])
 
-                    <div class="cardFill editorChoice"><a class="cardFill__link" href="{{ route('post-show', [$category->name, $posts[1]->slug]) }}"> <img class="cardFill__image" src="/{{ $posts[1]->image }}" alt=""/>
-                            <div class="cardFill__frame">
-                                <div class="cardFill__top">
-                                    {{--<div class="cardFill__comment">
-                                        <svg class="icon icon-comment cardFill__commentIcon">
-                                            <use xlink:href="/images/sprite.svg#comment"></use>
-                                        </svg>
-                                        <div class="cardFill__commentSize">12</div>
-                                    </div>--}}
-                                </div>
-                                <div class="cardFill__bottom">
-                                    <div class="cardFill__date"> {{ trans_choice("main.hours_number", $carbon::now()->copy()->diffInHours($posts[1]->date_time)) }} назад &bull; {{ $posts[0]->category->name_rus }}
+                        <div class="cardFill themeOfTheDay"><a class="cardFill__link" href="{{ route('post-show', [$category->name, $posts[0]->slug]) }}"> <img class="cardFill__image" src="/{{ $posts[0]->image }}" alt=""/>
+                                <div class="cardFill__frame">
+                                    <div class="cardFill__top">
+                                        {{--<div class="cardFill__comment hot">
+                                            <svg class="icon icon-fire cardFill__commentIcon">
+                                                <use xlink:href="/images/sprite.svg#fire"></use>
+                                            </svg>
+                                            <div class="cardFill__commentSize">154</div>
+                                        </div>--}}
                                     </div>
-                                    <div class="cardFill__name">{{ $posts[1]->title }}</div>
-                                </div>
-                            </div></a>
-                    </div>
+                                    <div class="cardFill__bottom">
+                                        <div class="cardFill__date"> {{ $posts[0]->date_formatted }} &bull; {{ $carbon::parse($posts[0]->date_time)->format('H:i') }} &bull; {{ $posts[0]->category->name_rus }}
+                                        </div>
+                                        <div class="cardFill__name">{{ $posts[0]->title }}</div>
+                                    </div>
+                                </div></a>
+                        </div>
+
+                    @endisset
+
+                    @isset($posts[1])
+
+                        <div class="cardFill editorChoice"><a class="cardFill__link" href="{{ route('post-show', [$category->name, $posts[1]->slug]) }}"> <img class="cardFill__image" src="/{{ $posts[1]->image }}" alt=""/>
+                                <div class="cardFill__frame">
+                                    <div class="cardFill__top">
+                                        {{--<div class="cardFill__comment">
+                                            <svg class="icon icon-comment cardFill__commentIcon">
+                                                <use xlink:href="/images/sprite.svg#comment"></use>
+                                            </svg>
+                                            <div class="cardFill__commentSize">12</div>
+                                        </div>--}}
+                                    </div>
+                                    <div class="cardFill__bottom">
+                                        <div class="cardFill__date"> {{ trans_choice("main.hours_number", $carbon::now()->copy()->diffInHours($posts[1]->date_time)) }} назад &bull; {{ $posts[0]->category->name_rus }}
+                                        </div>
+                                        <div class="cardFill__name">{{ $posts[1]->title }}</div>
+                                    </div>
+                                </div></a>
+                        </div>
+
+                    @endisset
 
                 </div>
                 <div class="module">
@@ -73,12 +81,12 @@
                                     </div>
                                     <div class="newsCard__text">{{ $post->descr }}</div>
                                     <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="{{ route('post-show', [$category->name, $post->slug]) }}">Читать полностью </a>
-                                        {{--<div class="newsCard__timeRead">
+                                        <div class="newsCard__timeRead">
                                             <svg class="icon icon-time newsCard__timeReadIcon">
                                                 <use xlink:href="/images/sprite.svg#time"></use>
                                             </svg>
-                                            <div class="newsCard__timeReadText">Время на прочтение 15 мин.</div>
-                                        </div>--}}
+                                            <div class="newsCard__timeReadText">Время на прочтение {{ $post->read_time }} мин.</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +94,7 @@
                         @endif
 
                     @empty
-                        <h1>No posts</h1>
+                        <h4>No posts</h4>
                     @endforelse
 
                 </div>

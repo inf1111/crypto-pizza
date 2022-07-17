@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Subscriber;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class ProfileController extends Controller
 {
@@ -34,7 +36,8 @@ class ProfileController extends Controller
             request()->all(),
             [
                 'name' => 'nullable|min:2|max:30',
-                'pass' => 'nullable|min:3|max:10|confirmed'
+                'pass' => 'nullable|min:3|max:10|confirmed',
+                'avatar' => 'nullable|mimes:jpeg,jpg,png,bmp,gif,svg,webp|dimensions:min_width=70,min_height=70',
             ],
             [
                 'pass.confirmed' => 'Пароли должны совпадать.'
@@ -46,6 +49,11 @@ class ProfileController extends Controller
         }
 
         $user = Auth::user();
+
+        if (request()->hasFile("avatar")) {
+            Image::make(request()->file('avatar'))->fit(70, 70)->save("avatars/" . $user->id . ".jpg");
+            $user->avatar = "avatars/" . $user->id . ".jpg";
+        }
 
         if (request()->has("name") && !empty(request()->name)) {
             $user->name = request()->name;

@@ -11,7 +11,7 @@
         <div class="columns ai-start fld-column-md">
             <div class="profile-form">
 
-                <form action="{{ route("profile-update") }}" method="POST">
+                <form action="{{ route("profile-update") }}" method="POST" enctype="multipart/form-data">
                     <h3 class="profile-form__title">Личные данные</h3>
 
                     @if (Session::has('success'))
@@ -58,6 +58,16 @@
                                 placeholder="Ваш email"
                                 value="{{ auth()->user()->email }}"
                                 disabled
+                            />
+                        </div>
+                    </div>
+                    <h3 class="profile-form__title">Аватар</h3>
+                    <div>
+                        <div class="input-form password">
+                            <input
+                                type="file"
+                                name="avatar"
+                                placeholder="Аватар"
                             />
                         </div>
                     </div>

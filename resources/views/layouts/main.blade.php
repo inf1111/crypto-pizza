@@ -137,7 +137,14 @@
                                     </svg>{{--<span>12</span>--}}
                                 </a>
 
-                                <div class="profile__user"> <a class="profile__ava" href="{{ route("profile-index") }}"> <img src="/images/anon.png" alt=""></a>
+                                <div class="profile__user"> <a class="profile__ava" href="{{ route("profile-index") }}">
+                                    <img src="
+                                        @if(is_null(Auth::user()->avatar))
+                                                /images/anon.png
+                                        @else
+                                            {{ Auth::user()->avatar }}
+                                        @endif
+                                    " alt=""></a>
                                     <div class="profile__btn">Профиль
                                         <svg class="icon icon-arrow-left ">
                                             <use xlink:href="/images/sprite.svg#arrow-left"></use>

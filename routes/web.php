@@ -10,8 +10,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/zzz', function () {
 
-    $views = View::where('date', '<', Carbon::now()->subDays(7))->get();
-    dd($views);
+    //$posts = \App\Post::where('read-time', "=", 0)->limit(200)->get();
+
+    /*foreach ($posts as $post) {
+
+        $post->update([ 'read-time' => ceil(strlen(strip_tags($post->text)) / 863) ]);
+
+    }*/
 
 });
 

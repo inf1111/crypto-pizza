@@ -132,6 +132,8 @@ class PostController extends Controller
 
         $post = Post::where('category_id', $category->id)->where('slug', $slug)->firstOrFail();
 
+        $postsOnTopic = Post::where('category_id', $category->id)->where('id', '<>', $post->id)->orderBy('date_time', 'desc')->take(5)->get();
+
         $youTubeLinks = YoutubeLink::orderBy('date_time', 'desc')->take(2)->get();
 
         View::create([
@@ -144,7 +146,8 @@ class PostController extends Controller
         return view("post", [
             'post' => $post,
             'youTubeLinks' => $youTubeLinks,
-            'missedPosts' => $this->getMissedPosts()
+            'missedPosts' => $this->getMissedPosts(),
+            'postsOnTopic' => $postsOnTopic
         ]);
     }
 
@@ -154,15 +157,13 @@ class PostController extends Controller
 
         if (request()->has("q") && request()->q != "") {
 
-            $resultsNotPaginated = (new Search())
-                ->registerModel(Post::class, 'title', 'text')
-                ->search(request()->q);
+            //dd(Post::search(request()->q)->get(), Post::search(request()->q)->paginate(10)->total());
 
-            $resultsPaginated = $this->paginate($resultsNotPaginated);
+            $results = Post::search(request()->q)->paginate(10);
 
             return view("search", [
-                'results' => $resultsPaginated,
-                'total' => $resultsNotPaginated->count(),
+                'results' => $results,
+                'total' => $results->total(),
                 'q' => request()->q,
 
                 'youTubeLinks' => $youTubeLinks,
@@ -172,25 +173,13 @@ class PostController extends Controller
         else {
 
             return view("search", [
-                'results' => [],
+                'results' => collect([]),
                 'total' => 0,
 
                 'youTubeLinks' => $youTubeLinks,
             ]);
 
         }
-    }
-
-    /**
-     * Пейджинация результатов поиска. Потребовалась, т.к. пакет spatie/laravel-searchable не предоставляет возможсность пейджинации результатов поиска
-     */
-    public function paginate($items, $perPage = 10, $page = null, $options = [])
-    {
-        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
-        $items = $items instanceof Collection ? $items : Collection::make($items);
-        $x = new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
-        $x->withPath('search');
-        return $x;
     }
 
     /**

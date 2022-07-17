@@ -178,12 +178,12 @@
                                 </div>
                                 <div class="newsCard__text">{{ $exPost->descr }}</div>
                                 <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="{{ route('post-show', [$exPost->category->name, $exPost->slug]) }}">Читать полностью </a>
-                                    {{--<div class="newsCard__timeRead">
+                                    <div class="newsCard__timeRead">
                                         <svg class="icon icon-time newsCard__timeReadIcon">
                                             <use xlink:href="./images/sprite.svg#time"></use>
                                         </svg>
-                                        <div class="newsCard__timeReadText">Время на прочтение 7 мин.</div>
-                                    </div>--}}
+                                        <div class="newsCard__timeReadText">Время на прочтение {{ $exPost->read_time }} мин.</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -258,10 +258,10 @@
                             </div>
                             <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="{{ route('post-show', [$eduPost->category->name, $eduPost->slug]) }}">Читать полностью </a>
                                 <div class="newsCard__timeRead">
-                                    {{--<svg class="icon icon-time newsCard__timeReadIcon">
+                                    <svg class="icon icon-time newsCard__timeReadIcon">
                                         <use xlink:href="./images/sprite.svg#time"></use>
                                     </svg>
-                                    <div class="newsCard__timeReadText">Время на прочтение 15 мин.</div>--}}
+                                    <div class="newsCard__timeReadText">Время на прочтение {{ $eduPost->read_time }} мин.</div>
                                 </div>
                             </div>
                         </div>
@@ -314,7 +314,7 @@
                                             <div class="play__text">Посмотреть<br>на YouTube</div>
                                         </div><img class="youtube__preview" src="/{{ $link->image }}" alt=""></a>
                                 </div>
-    
+
                             @endforeach
 
                         @endisset
@@ -342,12 +342,12 @@
                             </div>
                             <div class="newsCard__text">{{ $vPost->descr }}</div>
                             <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="{{ route('post-show', [$vPost->category->name, $vPost->slug]) }}">Читать полностью </a>
-                                {{--<div class="newsCard__timeRead">
+                                <div class="newsCard__timeRead">
                                     <svg class="icon icon-time newsCard__timeReadIcon">
                                         <use xlink:href="./images/sprite.svg#time"></use>
                                     </svg>
-                                    <div class="newsCard__timeReadText">Время на прочтение 15 мин.</div>
-                                </div>--}}
+                                    <div class="newsCard__timeReadText">Время на прочтение {{ $vPost->read_time }} мин.</div>
+                                </div>
                             </div>
                         </div>
                     </div>

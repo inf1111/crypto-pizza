@@ -35,7 +35,7 @@
                                         <svg class="icon icon-time newsCard__timeReadIcon">
                                             <use xlink:href="/images/sprite.svg#time"></use>
                                         </svg>
-                                        <div class="newsCard__timeReadText">Время на прочтение 15 мин.</div>
+                                        <div class="newsCard__timeReadText">Время на прочтение {{ $post->read_time }} мин.</div>
                                     </div><a class="newsCard__bookmark @if($post->bookmarked) is-active @endif" href="{{ route("toggle-bookmark", ["post_id" => $post->id]) }}"><span class="newsCard__bookmark-icon">
                             <svg class="icon icon-bookmark ">
                               <use xlink:href="/images/sprite.svg#bookmark"></use>

@@ -6,12 +6,18 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Spatie\Searchable\Searchable;
-use Spatie\Searchable\SearchResult;
+use Laravel\Scout\Searchable;
 
-class Post extends Model implements Searchable
+class Post extends Model
 {
+    use Searchable;
+
     protected $guarded = ['id'];
+
+    public function searchableAs()
+    {
+        return 'posts_index';
+    }
 
     protected static function booted()
     {
@@ -29,21 +35,6 @@ class Post extends Model implements Searchable
         $date = Carbon::parse($this->date_time);
         $date->locale('ru');
         return $date->isoFormat('D MMMM YYYY', 'Do MMMM');
-    }
-
-    public function getSearchResult(): SearchResult
-    {
-        //dd($this, $this->category->name, $this->slug);
-
-        $url = route('post-show', [$this->category->name, $this->slug]);
-
-        //dd($url);
-
-        return new SearchResult(
-            $this,
-            $this->title,
-            $url
-        );
     }
 
     public function getBookmarkedAttribute() {
