@@ -20,6 +20,12 @@
                         </div>
                     @endif
 
+                    @if (Session::has('new_password_set'))
+                        <div class="alert-bootstrap-success">
+                            Пароль обновлен
+                        </div>
+                    @endif
+
                     @if ($errors->any())
                         <div class="alert-bootstrap-danger">
                             @foreach ($errors->all() as $error)

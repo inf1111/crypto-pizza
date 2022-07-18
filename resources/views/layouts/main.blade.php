@@ -497,6 +497,33 @@
         </div>
     </div>
 </div>
+<div class="modal" data-modal="restore-3" data-simple="data-simple">
+    <div class="modal__wrapper">
+        <div class="modal__title">Восстановление пароля</div>
+        <div class="login">
+            <form action="">
+                <div class="login__form">
+                    <div>
+                        <div class="input-form">
+                            <input type="email" name="" id="modal_register_inp_email" placeholder="Ваш email" data-empty="true" autocomplete="sdffds" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" oninvalid="this.setCustomValidity('Введенный текст не является имейлом')" oninput="this.setCustomValidity('')" required />
+                        </div>
+                    </div>
+                    <div>
+                        <div class="input-form password">
+                            <input type="password" name="" id="modal_register_inp_pass" placeholder="Пароль" data-empty="true" autocomplete="new-password" pattern="[^<]{3,10}" oninvalid="this.setCustomValidity('Длина пароля - от 3 до 10 символов')" oninput="this.setCustomValidity('')" required/>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="input-form double-password">
+                            <input type="password" name="" id="modal_register_inp_pass_repeat" placeholder="Повторите пароль" data-empty="true" autocomplete="sdffаsdfds" pattern="[^<]{3,10}" oninvalid="this.setCustomValidity('Длина пароля - от 3 до 10 символов')" oninput="this.setCustomValidity('')" required />
+                        </div>
+                    </div>
+                    <button class="btn btn--orange" type="submit">Далее</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <div class="modal" data-modal="restore-2" data-simple="data-simple">
     <div class="modal__wrapper">
         <div class="modal__close">
@@ -534,7 +561,7 @@
             </svg>
         </div>
         <div class="modal__title">Связаться с нами</div>
-        <div class="modal__content">Пишите нам на e-mail <a href="mailto:nashemail@pizza.com">nashemail@pizza.com</a> или свяжитесь с нами через telegram канал:</div><a class="btn btn--black" href="">
+        <div class="modal__content">Пишите нам на e-mail <a href="mailto:info@crypto-pizza.ru">info@crypto-pizza.ru</a> или свяжитесь с нами через telegram канал:</div><a class="btn btn--black" href="https://t.me/SIGEN_Media" target="_blank">
             <svg class="icon icon-telegram ">
                 <use xlink:href="/images/sprite.svg#telegram"></use>
             </svg><span>Перейти в канал  </span></a>
@@ -555,5 +582,8 @@
 
 <script src="/js/subscribe.js"></script>
 <script src="/js/modals.js"></script>
+
+@yield('scriptssafter')
+
 </body>
 </html>

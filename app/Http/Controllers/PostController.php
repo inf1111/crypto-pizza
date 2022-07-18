@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Bookmark;
 use App\Category;
 use App\LikeP;
+use App\Option;
 use App\Post;
 use App\View;
 use App\YoutubeLink;
+use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
@@ -110,7 +112,7 @@ class PostController extends Controller
             "youTubeLinks" => $youTubeLinks,
             "recentNews" => $recentNews,
             "mostViewedPosts" => $mostViewedPosts,
-            "missedPosts" => $this->getMissedPosts()
+            "missedPosts" => $this->getMissedPosts(),
         ]);
     }
 
@@ -183,24 +185,6 @@ class PostController extends Controller
     }
 
     /**
-     * Данные для блока "Возможно вы пропустили" - посты, которые пользователь не читал (сделано с пом. куки)
-     */
-    private function getMissedPosts()
-    {
-        $readPosts = [];
-
-        foreach (request()->cookie() as $key => $val) {
-
-            if (substr($key, 0, 2) === "p_") {
-                $readPosts[] = $val;
-            }
-
-        }
-
-        return Post::whereNotIn('id', $readPosts)->limit(4)->get();
-    }
-
-    /**
      * Загрузка постов при клике на кнопку "Показать еще"
      */
     public function loadMore()
@@ -222,6 +206,24 @@ class PostController extends Controller
             'showLoadMoreBtn' => ((4 + $clicksQuantity * 4) >= Post::whereNotIn('id', $readPosts)->count() ) ? false : true,
         ]);
         return $view->render();
+    }
+
+    /**
+     * Данные для блока "Возможно вы пропустили" - посты, которые пользователь не читал (сделано с пом. куки)
+     */
+    private function getMissedPosts()
+    {
+        $readPosts = [];
+
+        foreach (request()->cookie() as $key => $val) {
+
+            if (substr($key, 0, 2) === "p_") {
+                $readPosts[] = $val;
+            }
+
+        }
+
+        return Post::whereNotIn('id', $readPosts)->limit(4)->get();
     }
 
 }

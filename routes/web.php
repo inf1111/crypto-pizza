@@ -3,22 +3,16 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\SubscriberController;
-use App\View;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/zzz', function () {
 
-    //$posts = \App\Post::where('read-time', "=", 0)->limit(200)->get();
-
-    /*foreach ($posts as $post) {
-
-        $post->update([ 'read-time' => ceil(strlen(strip_tags($post->text)) / 863) ]);
-
-    }*/
-
 });
+
+Route::get('/new-pass/{token}', [ResetPasswordController::class, 'newPasswordForm'])->name("new-pass-form");
+Route::post('/new-pass', [ResetPasswordController::class, 'newPasswordSet'])->name("new-pass-set");
 
 // Ajax
 Route::post('/subscriber', [SubscriberController::class, 'create'])->name("subscriber-create");

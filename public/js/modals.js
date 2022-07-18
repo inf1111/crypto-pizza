@@ -6,7 +6,7 @@ var more = document.querySelector('[data-modal="restore-1"] .btn');
 var register = document.querySelector('[data-modal="register"] .btn');
 var loginAfterReg = document.querySelector('[data-modal="register-ok"] .btn');
 
-/*if (lostPass) {
+if (lostPass) {
     lostPass.addEventListener('click', function (e) {
         e.preventDefault();
         //(0,_modal_modal__WEBPACK_IMPORTED_MODULE_0__.modalRemove)();
@@ -14,7 +14,7 @@ var loginAfterReg = document.querySelector('[data-modal="register-ok"] .btn');
         //(0,_modal_modal__WEBPACK_IMPORTED_MODULE_0__.modalAdd)('restore-1');
         modalAdd('restore-1');
     });
-}*/
+}
 
 if (more) {
     more.addEventListener('click', function (e) {
