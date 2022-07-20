@@ -142,7 +142,7 @@
                                         @if(is_null(Auth::user()->avatar))
                                                 /images/anon.png
                                         @else
-                                            {{ Auth::user()->avatar }}
+                                            /{{ Auth::user()->avatar }}
                                         @endif
                                     " alt=""></a>
                                     <div class="profile__btn">Профиль
@@ -471,54 +471,15 @@
         </div>
         <div class="modal__title">Восстановление пароля</div>
         <div class="login">
-            <form action="">
+            <form action="" id="modal_restore_1_form">
                 <div class="login__form">
                     <div>
                         <div class="input-form">
-                            <input type="email" name="" data-empty="true" autocomplete="off"/>
-                            <label>Ваш email</label>
-                            <div class="input-form__result">
-                                <div class="valid">
-                                    <svg class="icon icon-valid ">
-                                        <use xlink:href="/images/sprite.svg#valid"></use>
-                                    </svg> —  Сохранено
-                                </div>
-                                <div class="invalid">
-                                    <svg class="icon icon-invalid ">
-                                        <use xlink:href="/images/sprite.svg#invalid"></use>
-                                    </svg> —  Текст ошибки
-                                </div>
-                            </div>
+                            <input type="email" name="" id="modal_restore_1_inp_email" placeholder="Ваш email" data-empty="true" autocomplete="sdffds" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" oninvalid="this.setCustomValidity('Введенный текст не является имейлом')" oninput="this.setCustomValidity('')" required />
                         </div>
                     </div>
                     <button class="btn btn--orange" type="submit">Далее</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<div class="modal" data-modal="restore-3" data-simple="data-simple">
-    <div class="modal__wrapper">
-        <div class="modal__title">Восстановление пароля</div>
-        <div class="login">
-            <form action="">
-                <div class="login__form">
-                    <div>
-                        <div class="input-form">
-                            <input type="email" name="" id="modal_register_inp_email" placeholder="Ваш email" data-empty="true" autocomplete="sdffds" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" oninvalid="this.setCustomValidity('Введенный текст не является имейлом')" oninput="this.setCustomValidity('')" required />
-                        </div>
-                    </div>
-                    <div>
-                        <div class="input-form password">
-                            <input type="password" name="" id="modal_register_inp_pass" placeholder="Пароль" data-empty="true" autocomplete="new-password" pattern="[^<]{3,10}" oninvalid="this.setCustomValidity('Длина пароля - от 3 до 10 символов')" oninput="this.setCustomValidity('')" required/>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="input-form double-password">
-                            <input type="password" name="" id="modal_register_inp_pass_repeat" placeholder="Повторите пароль" data-empty="true" autocomplete="sdffаsdfds" pattern="[^<]{3,10}" oninvalid="this.setCustomValidity('Длина пароля - от 3 до 10 символов')" oninput="this.setCustomValidity('')" required />
-                        </div>
-                    </div>
-                    <button class="btn btn--orange" type="submit">Далее</button>
+                    <div id="modal_restore_1_msg"></div>
                 </div>
             </form>
         </div>

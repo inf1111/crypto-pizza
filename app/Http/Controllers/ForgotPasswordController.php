@@ -6,25 +6,32 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
+/**
+ * Методы для форм, которые идут до отправки письма о смене пароля
+ */
 class ForgotPasswordController extends Controller
 {
 
-    // это страница с формой ввода только имейла, которая открывается по ссылке "забыли пассворд?" мне она не нужна т.к. у меня это окно
-    /*public function getEmail()
-    {
-        return view('customauth.passwords.email');
-    }*/
-
-    // это экшен для формы выше, надо его переделать для аякс запроса.
     public function postEmail(Request $request)
     {
-        $request->validate(
+        $validator = Validator::make(
+            request()->only(['email']),
             [
                 'email' => 'required|email|exists:users',
             ]
         );
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    "status" => "error",
+                    "error_msg" => "Данного имейла нет в базе",
+                ]
+            );
+        }
 
         $token = Str::random(64);
 
@@ -34,13 +41,18 @@ class ForgotPasswordController extends Controller
 
         Mail::send(
             'mail.forgot-password',
-            ['token' => $token],
+            [
+                'token' => $token,
+                'email' => $request->email
+            ],
             function ($message) use ($request) {
                 $message->to($request->email);
                 $message->subject('Reset Password Notification');
             }
         );
 
-        return back()->with('message', 'We have e-mailed your password reset link!');
+        return response()->json([
+            "status" => "ok"
+        ]);
     }
 }

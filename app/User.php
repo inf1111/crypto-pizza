@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 
 class User extends Authenticatable
 {
@@ -52,6 +52,28 @@ class User extends Authenticatable
     public function getSubscribedAttribute() {
 
         return (Subscriber::where('email', $this->email)->exists()) ? true : false;
+
+    }
+
+    public function getNameForCommentsAttribute() {
+
+        return ($this->name === null) ? "Анонимный пользователь" : $this->name;
+
+    }
+
+    public function checkIn() {
+
+        $this->last_vistit_at = now();
+        $this->save();
+
+    }
+
+    public function getIsOnlineAttribute() {
+
+        $last_vistit_at = Carbon::parse($this->last_vistit_at);
+        $tenMinutesAgo = Carbon::now()->subMinutes(10);
+
+        return ($last_vistit_at->gte($tenMinutesAgo)) ? true : false;
 
     }
 

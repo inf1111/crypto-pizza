@@ -5,18 +5,29 @@ var lostPass = document.querySelector('.lost-pass');
 var more = document.querySelector('[data-modal="restore-1"] .btn');
 var register = document.querySelector('[data-modal="register"] .btn');
 var loginAfterReg = document.querySelector('[data-modal="register-ok"] .btn');
+//var eee = $('div.post-comment__noauth.');
+
+$('#enter_from_comments_btn').on("click", function(e) {
+    e.preventDefault();
+    modalRemove();
+    modalAdd('login');
+});
+
+$('#register_from_comments_btn').on("click", function(e) {
+    e.preventDefault();
+    modalRemove();
+    modalAdd('register');
+});
 
 if (lostPass) {
     lostPass.addEventListener('click', function (e) {
         e.preventDefault();
-        //(0,_modal_modal__WEBPACK_IMPORTED_MODULE_0__.modalRemove)();
         modalRemove();
-        //(0,_modal_modal__WEBPACK_IMPORTED_MODULE_0__.modalAdd)('restore-1');
         modalAdd('restore-1');
     });
 }
 
-if (more) {
+/*if (more) {
     more.addEventListener('click', function (e) {
         e.preventDefault();
         //(0,_modal_modal__WEBPACK_IMPORTED_MODULE_0__.modalRemove)();
@@ -24,7 +35,7 @@ if (more) {
         //(0,_modal_modal__WEBPACK_IMPORTED_MODULE_0__.modalAdd)('restore-2');
         modalAdd('restore-2');
     });
-}
+}*/
 
 /*if (register) {
     register.addEventListener('click', function (e) {
@@ -171,6 +182,40 @@ $("#modal_register_form").submit(function(e){
             }
             else {
                 $("#modal_register_msg").html(response["error_msg"]);
+            }
+
+            $("#loading_circle").css("display", "none");
+        },
+    });
+
+});
+
+///////////// Restore-1 (enter email)
+
+$("#modal_restore_1_form").submit(function(e){
+
+    e.preventDefault();
+
+    var email = $("#modal_restore_1_inp_email").val();
+
+    $.ajax({
+        type: 'POST',
+        url: "https://pizza.wowcall.ru/post-email",
+        data: {
+            email: email,
+        },
+        beforeSend: function()
+        {
+            $("#loading_circle").css("display", "block");
+        },
+        success: function(response)
+        {
+            if (response["status"] == "ok") {
+                modalRemove();
+                modalAdd('restore-2');
+            }
+            else {
+                $("#modal_restore_1_msg").html(response["error_msg"]);
             }
 
             $("#loading_circle").css("display", "none");

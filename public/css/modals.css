@@ -1,4 +1,8 @@
 
-#modal_enter_msg, #modal_register_msg {
+#modal_enter_msg, #modal_register_msg, #modal_restore_1_msg {
     color: red;
+}
+
+#set_new_pass_overlay {
+    background-color: black !important;
 }

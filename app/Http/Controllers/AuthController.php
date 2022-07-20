@@ -15,7 +15,7 @@ class AuthController extends Controller
             request()->only(['email', 'pass', 'passRepeat']),
             [
                 'email' => ['required', 'regex:/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/Uis', 'max:255'],
-                'pass' => 'required|min:3|max:10',
+                'pass' => 'required|c',
                 'passRepeat' => 'required|min:3|max:10',
             ]
         );
@@ -45,10 +45,12 @@ class AuthController extends Controller
 
         }
 
-        User::create([
+        $user = User::create([
             'email' => request()->email,
-            'password' => Hash::make(request()->pass)
+            'password' => Hash::make(request()->pass),
         ]);
+
+        $user->checkIn();
 
         return response()->json([
             "status" => "ok"
@@ -90,6 +92,8 @@ class AuthController extends Controller
 
         Auth::login($existingUser);
 
+        $existingUser->checkIn();
+
         return response()->json([
             "status" => "ok"
         ]);
@@ -98,6 +102,8 @@ class AuthController extends Controller
 
     public function logout()
     {
+        Auth::user()->checkIn();
+
         Auth::guard('web')->logout();
 
         request()->session()->invalidate();

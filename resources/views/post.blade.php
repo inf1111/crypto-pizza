@@ -28,7 +28,7 @@
                             <use xlink:href="/images/sprite.svg#bookmark"></use>
                         </svg></a></div>
                 @endauth
-                <div class="share__item"><a class="share__link" href="https://twitter.com/intent/tweet?text={{ \Illuminate\Support\Str::limit($post->text, 279) }}&url={{ url()->current() }}" target="_blank"><img src="/images/share/twitter.svg" alt=""></a></div>
+                <div class="share__item"><a class="share__link" href="https://twitter.com/intent/tweet?text={!! \Illuminate\Support\Str::limit(strip_tags($post->text), 200) !!}&url={{ url()->current() }}" target="_blank"><img src="/images/share/twitter.svg" alt=""></a></div>
                 <div class="share__item"><a class="share__link" href="https://www.facebook.com/sharer/sharer.php?u={{ url()->current() }}" target="_blank"><img src="/images/share/facebook.svg" alt=""></a></div>
                 <div class="share__item"><a class="share__link" href="https://t.me/share/url?url={{ url()->current() }}" target="_blank"><img src="/images/share/telegram.svg" alt=""></a></div>
                 <div class="share__item"><a class="share__link" href="https://vk.com/share.php?url={{ url()->current() }}" target="_blank"><img src="/images/share/vk.svg" alt=""></a></div>
@@ -55,6 +55,24 @@
                             </div>
                         </div>
                     </div>
+
+                    @if(isset($post->contents) && count(json_decode($post->contents))>0)
+
+                        <div class="post__article module">
+                            <div class="post__article-title">Содержание статьи:</div>
+                            <ul class="post__article-list">
+
+                                @foreach(json_decode($post->contents) as $key => $item)
+
+                                    <li class="post__article-item"><a class="post__article-link" href="#head_{{ $key }}">{!! $item !!}</a></li>
+
+                                @endforeach
+
+                            </ul>
+                        </div>
+
+                    @endisset
+
                     <div class="post__content">
 
                         {!! $post->text !!}
@@ -65,7 +83,7 @@
                     <div class="share__social">
                         <div class="share__social-text">Поделиться<br>новостью:</div>
                         <div class="share__social-list">
-                            <div class="share__item"> <a class="share__link" href="https://twitter.com/intent/tweet?text={{ \Illuminate\Support\Str::limit($post->text, 279) }}&url={{ url()->current() }}" target="_blank"><img src="/images/share/twitter.svg" alt=""></a></div>
+                            <div class="share__item"> <a class="share__link" href="https://twitter.com/intent/tweet?text={!! \Illuminate\Support\Str::limit(strip_tags($post->text), 200) !!}&url={{ url()->current() }}" target="_blank"><img src="/images/share/twitter.svg" alt=""></a></div>
 
                             <div class="share__item"><a class="share__link" href="https://www.facebook.com/sharer/sharer.php?u={{ url()->current() }}" target="_blank"><img src="/images/share/facebook.svg" alt=""></a></div>
 
@@ -126,197 +144,106 @@
 
                 @endisset
 
-                {{--<div class="post-comment module">
-                    <div class="post-comment__title">Комментарии: <sup>0</sup></div>
-                    <div class="post-comment__auth"><img class="post-comment__pizza" src="/images/pizza.webp" alt="">
-                        <div class="post-comment__description">Комментариев еще нет. Вы можете оставить первый.</div>
-                        <button class="btn btn--orange post-comment__btn">Оставить комментарий</button>
-                    </div>
-                    <div class="post-comment__noauth">
-                        <div class="post-comment__description">Чтобы оставлять комментарии вы должны быть зарегистрированы. </div>
-                        <div class="post-comment__row"><a class="btn btn--black post-comment__btn" href="">Войти</a><a class="btn btn--white post-comment__btn" href="">Зарегистрироваться </a></div>
-                    </div>
-                </div>--}}
-                {{--<div class="post-comment module">
-                    <div class="post-comment__title">Комментарии: <sup>70</sup></div>
-                    <div class="comment">
-                        <div class="comment__header">
-                            <div class="comment__avatar online"><img src="/images/upload/9.webp" alt="Cryptobroker27"/></div>
-                            <div class="comment__author">Cryptobroker27</div>
-                            <div class="comment__bull"></div>
-                            <div class="comment__time">15 минут назад</div>
-                            <div class="comment__liked">
-                                <svg class="icon icon-like is-active">
-                                    <use xlink:href="/images/sprite.svg#like"></use>
-                                </svg>
-                                <div class="comment__liked-value positive">+10</div>
-                                <svg class="icon icon-dislike ">
-                                    <use xlink:href="/images/sprite.svg#dislike"></use>
-                                </svg>
-                            </div>
+                <div class="post-comment module">
+                    <div class="post-comment__title">Комментарии: <sup>{{ $post->comments()->count() }}</sup></div>
+
+                    @if($post->comments()->count() === 0)
+
+                        <div class="post-comment__auth"><img class="post-comment__pizza" src="/images/pizza.webp" alt="">
+                            <div class="post-comment__description">Комментариев еще нет. Вы можете оставить первый.</div>
                         </div>
-                        <div class="comment__body">Задача организации, в особенности же начало повседневной работы по формированию позиции влечет за собой процесс внедрения и модернизации систем массового участия. Равным образом сложившаяся структура организации способствует.</div>
-                        <div class="comment__footer">
-                            <div class="comment__reply">
-                                <svg class="icon icon-reply ">
-                                    <use xlink:href="/images/sprite.svg#reply"></use>
-                                </svg>Ответить
-                            </div>
-                        </div>
-                    </div>
-                    <div class="post-comment__reply">
-                        <div class="comment reply">
-                            <div class="comment__header">
-                                <div class="comment__avatar offline"><img src="/images/upload/9.webp" alt="nft_monkey"/></div>
-                                <div class="comment__author">nft_monkey</div>
-                                <div class="comment__bull"></div>
-                                <div class="comment__time">15 минут назад</div>
-                                <div class="comment__liked">
-                                    <svg class="icon icon-like ">
-                                        <use xlink:href="/images/sprite.svg#like"></use>
-                                    </svg>
-                                    <div class="comment__liked-value negative">-18</div>
-                                    <svg class="icon icon-dislike is-active">
-                                        <use xlink:href="/images/sprite.svg#dislike"></use>
-                                    </svg>
+
+                    @else
+
+                        @foreach($post->comments as $cmnt)
+
+                            <div class="comment">
+                                <div class="comment__header">
+                                    <div class="comment__avatar @if($cmnt->user->isOnline) online @endif">
+                                        <img src="
+                                            @if(is_null($cmnt->user->avatar))
+                                                /images/anon.png
+                                            @else
+                                                /{{ $cmnt->user->avatar }}
+                                            @endif
+                                        "/>
+                                    </div>
+                                    <div class="comment__author">{{ $cmnt->user->NameForComments }}</div>
+                                    <div class="comment__bull"></div>
+                                    <div class="comment__time">{{ $carbon::parse($cmnt->created_at)->format('d.m.Y H:i') }}</div>
+                                    {{--<div class="comment__liked">
+                                        <svg class="icon icon-like is-active">
+                                            <use xlink:href="/images/sprite.svg#like"></use>
+                                        </svg>
+                                        <div class="comment__liked-value positive">+10</div>
+                                        <svg class="icon icon-dislike ">
+                                            <use xlink:href="/images/sprite.svg#dislike"></use>
+                                        </svg>
+                                    </div>--}}
+                                </div>
+                                <div class="comment__body">{{ $cmnt->text }}</div>
+                                <div class="comment__footer">
+
+                                    @auth
+
+                                        <div class="comment__reply">
+                                            <svg class="icon icon-reply ">
+                                                <use xlink:href="/images/sprite.svg#reply"></use>
+                                            </svg>Ответить
+                                        </div>
+
+                                    @endauth
+
                                 </div>
                             </div>
-                            <div class="comment__body">Лол, ты видимо не шаришь в криптоиндустрии. Я спец</div>
-                            <div class="comment__footer">
-                                <div class="comment__reply">
-                                    <svg class="icon icon-reply ">
-                                        <use xlink:href="/images/sprite.svg#reply"></use>
-                                    </svg>Ответить
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment reply">
-                            <div class="comment__header">
-                                <div class="comment__avatar offline"><img src="/images/upload/9.webp" alt="Odmen"/></div>
-                                <div class="comment__author">Odmen</div>
-                                <div class="comment__bull"></div>
-                                <div class="comment__time">15 минут назад</div>
-                                <div class="comment__liked">
-                                    <svg class="icon icon-like ">
-                                        <use xlink:href="/images/sprite.svg#like"></use>
-                                    </svg>
-                                    <div class="comment__liked-value neutral">0</div>
-                                    <svg class="icon icon-dislike ">
-                                        <use xlink:href="/images/sprite.svg#dislike"></use>
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="comment__body">Рыба комментарий типо. Васильев, зачем ты это читаешь? Дизайн смотри!</div>
-                            <div class="comment__footer">
-                                <div class="comment__reply">
-                                    <svg class="icon icon-reply ">
-                                        <use xlink:href="/images/sprite.svg#reply"></use>
-                                    </svg>Ответить
-                                </div>
-                            </div>
-                        </div>
-                        <div class="post-comment__hider" data-reply="2">Раскрыть ветку (2)</div>
-                    </div>
-                    <div class="comment">
-                        <div class="comment__header">
-                            <div class="comment__avatar online"><img src="/images/upload/9.webp" alt="glavniy_investor"/></div>
-                            <div class="comment__author">glavniy_investor</div>
-                            <div class="comment__bull"></div>
-                            <div class="comment__time">15 минут назад</div>
-                            <div class="comment__liked">
-                                <svg class="icon icon-like ">
-                                    <use xlink:href="/images/sprite.svg#like"></use>
-                                </svg>
-                                <div class="comment__liked-value positive">+2</div>
-                                <svg class="icon icon-dislike is-active">
-                                    <use xlink:href="/images/sprite.svg#dislike"></use>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="comment__body">Задача организации, в особенности же начало повседневной работы по формированию позиции влечет за собой процесс внедрения и модернизации систем массового участия. </div>
-                        <div class="comment__footer">
-                            <div class="comment__reply">
-                                <svg class="icon icon-reply ">
-                                    <use xlink:href="/images/sprite.svg#reply"></use>
-                                </svg>Ответить
-                            </div>
-                        </div>
-                    </div>
-                    <div class="comment">
-                        <div class="comment__header">
-                            <div class="comment__avatar online"><img src="/images/upload/9.webp" alt="Odmen_777"/></div>
-                            <div class="comment__author">Odmen_777</div>
-                            <div class="comment__bull"></div>
-                            <div class="comment__time">15 минут назад</div>
-                            <div class="comment__liked">
-                                <svg class="icon icon-like is-active">
-                                    <use xlink:href="/images/sprite.svg#like"></use>
-                                </svg>
-                                <div class="comment__liked-value positive">+10</div>
-                                <svg class="icon icon-dislike ">
-                                    <use xlink:href="/images/sprite.svg#dislike"></use>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="comment__body">Задача организации, в особенности же начало повседневной работы по формированию позиции влечет за собой процесс внедрения и модернизации систем массового участия. Равным образом сложившаяся структура организации способствует.</div>
-                        <div class="comment__footer">
-                            <div class="comment__reply">
-                                <svg class="icon icon-reply ">
-                                    <use xlink:href="/images/sprite.svg#reply"></use>
-                                </svg>Ответить
-                            </div>
-                        </div>
-                    </div>
-                    <div class="comment">
-                        <div class="comment__header">
-                            <div class="comment__avatar online"><img src="/images/upload/9.webp" alt="Cryptobroker27"/></div>
-                            <div class="comment__author">Cryptobroker27</div>
-                            <div class="comment__bull"></div>
-                            <div class="comment__time">15 минут назад</div>
-                            <div class="comment__liked">
-                                <svg class="icon icon-like ">
-                                    <use xlink:href="/images/sprite.svg#like"></use>
-                                </svg>
-                                <div class="comment__liked-value positive">+10</div>
-                                <svg class="icon icon-dislike ">
-                                    <use xlink:href="/images/sprite.svg#dislike"></use>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="comment__body">Задача организации, в особенности же начало повседневной работы по формированию позиции влечет за собой процесс внедрения и модернизации систем массового участия. Равным образом сложившаяся структура организации способствует.</div>
-                        <div class="comment__footer">
-                            <div class="comment__reply">
-                                <svg class="icon icon-reply ">
-                                    <use xlink:href="/images/sprite.svg#reply"></use>
-                                </svg>Ответить
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row aic jcc"><a class="btn btn--white" href="">
+
+                        @endforeach
+
+                    @endif
+
+                    {{--<div class="row aic jcc"><a class="btn btn--white" href="">
                             <svg class="icon icon-more ">
                                 <use xlink:href="/images/sprite.svg#more"></use>
-                            </svg>Еще комментарии (112) </a></div>
-                    <div class="post-comment__write">
-                        <h3 class="post-comment__write-title">Оставить комментарий:</h3>
-                        <form action="">
-                            <div class="post-comment__write-box">
-                                <textarea class="textarea" placeholder="Введите текст комментария"></textarea>
-                                <div class="post-comment__write-actions">
-                                    <button>
-                                        <svg class="icon icon-emoji ">
-                                            <use xlink:href="/images/sprite.svg#emoji"></use>
-                                        </svg>
-                                    </button>
-                                    <button type="submit">
-                                        <svg class="icon icon-send ">
-                                            <use xlink:href="/images/sprite.svg#send"></use>
-                                        </svg>
-                                    </button>
+                            </svg>Еще комментарии (112) </a>
+                    </div>--}}
+
+                    @guest
+
+                        <div class="post-comment__noauth">
+                            <div class="post-comment__description">Чтобы оставлять комментарии вы должны быть зарегистрированы. </div>
+                            <div class="post-comment__row"><a class="btn btn--black post-comment__btn" href="#" id="enter_from_comments_btn">Войти</a><a class="btn btn--white post-comment__btn" href="#" id="register_from_comments_btn">Зарегистрироваться </a></div>
+                        </div>
+
+                    @endguest
+
+                    @auth
+
+                        <div class="post-comment__write">
+                            <h3 class="post-comment__write-title">Оставить комментарий:</h3>
+                            <form action="{{ route("comment-store") }}" method="POST">
+                                <input type="hidden" name="post_id" value="{{ $post->id }}">
+                                <input type="hidden" name="parent_id" value="0">
+                                <div class="post-comment__write-box">
+                                    <textarea class="textarea" name="text" placeholder="Введите текст комментария" minlength="3" maxlength="255" required oninvalid="this.setCustomValidity('Длина комментария - от 3 до 255 символов')" oninput="this.setCustomValidity('')"></textarea>
+                                    <div class="post-comment__write-actions">
+                                        {{--<button>
+                                            <svg class="icon icon-emoji ">
+                                                <use xlink:href="/images/sprite.svg#emoji"></use>
+                                            </svg>
+                                        </button>--}}
+                                        <button type="submit">
+                                            <svg class="icon icon-send ">
+                                                <use xlink:href="/images/sprite.svg#send"></use>
+                                            </svg>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>--}}
+                            </form>
+                        </div>
+
+                    @endauth
+
+                </div>
             </div>
 
             @include("includes.post-search-menu")

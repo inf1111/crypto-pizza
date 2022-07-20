@@ -30,6 +30,10 @@ class Post extends Model
         return $this->belongsTo('App\Category');
     }
 
+    public function comments() {
+        return $this->hasMany('App\Comment');
+    }
+
     public function getDateFormattedAttribute($value)
     {
         $date = Carbon::parse($this->date_time);
