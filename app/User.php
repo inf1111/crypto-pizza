@@ -37,6 +37,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONS
+    |--------------------------------------------------------------------------
+    */
+
     public function bookmarkedPosts() {
 
         return $this->belongsToMany('App\Post', 'bookmarks', 'user_id', 'post_id')->orderBy('date_time','desc'); //таблицу следовало назвать не bookmarks, а user_posts
@@ -48,6 +54,17 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Post', 'likesp', 'user_id', 'post_id')->orderBy('date_time','desc'); //таблицу следовало назвать не likesp, а user_posts
 
     }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Comment')->orderBy('created_at', 'desc');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | FUNCTIONS
+    |--------------------------------------------------------------------------
+    */
 
     public function getSubscribedAttribute() {
 

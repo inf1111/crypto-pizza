@@ -36,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
         );
 
         View::composer(
-            ['includes.home-category-menu'],
+            ['includes.menus.pizza-day'],
             function ($view) {
 
                 $pizzaPrice = number_format(Option::first()->btc_usd_rate * 10000, 0, ".", " ");

@@ -3,7 +3,7 @@
 
     <div class="container">
         <div class="breadcrumbs">
-            <div class="breadcrumbs__item"> <a href="">Главная     </a></div>
+            <div class="breadcrumbs__item"> <a href="{{ route("home") }}">Главная</a></div>
             <div class="breadcrumbs__separator">—</div>
             <div class="breadcrumbs__item"><span>Профиль пользователя</span></div>
         </div>
@@ -111,7 +111,7 @@
                             <div class="input-checkbox__input">
                                 <input type="checkbox" name="subscribed" @if(auth()->user()->subscribed) checked @endif  />
                                 <svg class="icon icon-check ">
-                                    <use xlink:href="./images/sprite.svg#check"></use>
+                                    <use xlink:href="/images/sprite.svg#check"></use>
                                 </svg>
                             </div><span>Подписаться на последние новости по Email</span>
                         </label>
@@ -121,7 +121,7 @@
 
             </div>
 
-            @include("includes.profile-menu")
+            @include("includes.menus.profile-menu")
 
         </div>
 

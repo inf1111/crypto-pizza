@@ -10,12 +10,9 @@
                     <div class="newsCard__info">
                         <div class="newsCard__date">{{ $post->date_formatted }}</div>
                         <div class="newsCard__category">{{ $post->category->name_rus }}</div>
-                        {{--<div class="newsCard__comment">
-                            <svg class="icon icon-comment newsCard__commentIcon">
-                                <use xlink:href="./images/sprite.svg#comment"></use>
-                            </svg>
-                            <div class="newsCard__commentSize">25</div>
-                        </div>--}}
+
+                        @include("includes.comments.newscard-comment", ['post' => $post])
+
                     </div>
                     <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="{{ route('post-show', [$post->category->name, $post->slug]) }}">Читать полностью </a>
                     </div>

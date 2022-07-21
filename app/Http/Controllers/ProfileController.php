@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use App\Subscriber;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -16,6 +17,15 @@ class ProfileController extends Controller
     {
         return view("profile-index", [
             //"eduTopPosts" => $eduTopPosts
+        ]);
+    }
+
+    public function commentsIndex()
+    {
+        $comments = Comment::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(10);
+
+        return view("profile-comments", [
+            "comments" => $comments
         ]);
     }
 

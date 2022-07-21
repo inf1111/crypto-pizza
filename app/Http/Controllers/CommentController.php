@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
+use App\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -33,7 +34,10 @@ class CommentController extends Controller
             ]
         );
 
-        return redirect()->back();
+        $post = Post::find(request()->post_id);
+
+        return redirect()->to(route('post-show', [$post->category->name, $post->slug]).'#commentsAnchor');
+
     }
 
 }

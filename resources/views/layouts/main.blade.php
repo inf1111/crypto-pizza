@@ -160,12 +160,12 @@
                                         <span>Мой профиль</span>
                                     </a>
 
-                                    {{--<a class="profile__link" href="/profile-comments.html">
+                                    <a class="profile__link" href="{{ route("profile-comments") }}">
                                         <svg class="icon icon-chat ">
                                             <use xlink:href="/images/sprite.svg#chat"></use>
                                         </svg>
-                                        <span>Мои комментарии <sup>176</sup></span>
-                                    </a>--}}
+                                        <span>Мои комментарии <sup>{{ Auth::user()->comments->count() }}</sup></span>
+                                    </a>
 
                                     <a class="profile__link" href="{{ route("profile-bookmarks") }}">
                                         <svg class="icon icon-bookmark ">

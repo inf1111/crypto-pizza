@@ -1,6 +1,16 @@
 
 ///////////// All modals
 
+$(".comment__action > a.remove").on("click", function(e){
+    //alert(1);
+    e.preventDefault();
+    modalRemove();
+    modalAdd('remove');
+
+    //var commentId = $(this).attr("data-commentId");
+    //$("#parentIdInput").val(commentId);
+});
+
 var lostPass = document.querySelector('.lost-pass');
 var more = document.querySelector('[data-modal="restore-1"] .btn');
 var register = document.querySelector('[data-modal="register"] .btn');

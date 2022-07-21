@@ -54,16 +54,13 @@
                                     <div class="cardFill__top">
                                         <div class="cardFill__tag">
                                             <svg class="icon icon-paper cardFill__tagIcon">
-                                                <use xlink:href="./images/sprite.svg#paper"></use>
+                                                <use xlink:href="/images/sprite.svg#paper"></use>
                                             </svg>
                                             <div class="cardFill__tagText">тема дня</div>
                                         </div>
-                                        {{--<div class="cardFill__comment hot">
-                                            <svg class="icon icon-fire cardFill__commentIcon">
-                                                <use xlink:href="./images/sprite.svg#fire"></use>
-                                            </svg>
-                                            <div class="cardFill__commentSize">154</div>
-                                        </div>--}}
+
+                                        @include("includes.comments.cardfill-comment", ['post' => $topicOfDay])
+
                                     </div>
                                     <div class="cardFill__bottom">
                                         <div class="cardFill__date"> {{ $topicOfDay->date_formatted }} &bull; {{ $carbon::parse($topicOfDay->date_time)->format('H:i') }} &bull; {{ $topicOfDay->category->name_rus }}
@@ -82,16 +79,13 @@
                                     <div class="cardFill__top">
                                         <div class="cardFill__tag">
                                             <svg class="icon icon-target cardFill__tagIcon">
-                                                <use xlink:href="./images/sprite.svg#target"></use>
+                                                <use xlink:href="/images/sprite.svg#target"></use>
                                             </svg>
                                             <div class="cardFill__tagText">Выбор <br> редакции</div>
                                         </div>
-                                        {{--<div class="cardFill__comment">
-                                            <svg class="icon icon-comment cardFill__commentIcon">
-                                                <use xlink:href="./images/sprite.svg#comment"></use>
-                                            </svg>
-                                            <div class="cardFill__commentSize">12</div>
-                                        </div>--}}
+
+                                        @include("includes.comments.cardfill-comment", ['post' => $editorsChoice])
+
                                     </div>
                                     <div class="cardFill__bottom">
                                         <div class="cardFill__date"> {{ trans_choice("main.hours_number", $carbon::now()->copy()->diffInHours($editorsChoice->date_time)) }} назад &bull; {{ $editorsChoice->category->name_rus }}
@@ -117,12 +111,9 @@
                                 <div class="newsFeed__body">
                                     <div class="newsFeed__name"><a href="{{ route('post-show', [$recentNews->first()->category->name, $recentNews->first()->slug]) }}">{{ $recentNews->first()->title }}</a></div>
                                     <div class="newsFeed__info">
-                                        {{--<div class="newsFeed__comment">
-                                            <svg class="icon icon-comment newsFeed__commentIcon">
-                                                <use xlink:href="./images/sprite.svg#comment"></use>
-                                            </svg>
-                                            <div class="newsFeed__commentSize">25</div>
-                                        </div>--}}
+
+                                        @include("includes.comments.newsfeed-comment", ['post' => $recentNews->first()])
+
                                         <div class="newsFeed__time">{{ $carbon::parse($recentNews->first()->date_time)->format('H:i') }}</div>
                                     </div>
                                 </div>
@@ -140,12 +131,9 @@
                                         <div class="newsFeed__body">
                                             <div class="newsFeed__name"><a href="{{ route('post-show', [$item->category->name, $item->slug]) }}">{{ $item->title }}</a></div>
                                             <div class="newsFeed__info">
-                                                {{--<div class="newsFeed__comment hot">
-                                                    <svg class="icon icon-fire newsFeed__commentIcon">
-                                                        <use xlink:href="./images/sprite.svg#fire"></use>
-                                                    </svg>
-                                                    <div class="newsFeed__commentSize">170</div>
-                                                </div>--}}
+
+                                                @include("includes.comments.newsfeed-comment", ['post' => $item])
+
                                                 <div class="newsFeed__time">{{ $carbon::parse($item->date_time)->format('H:i') }}</div>
                                             </div>
                                         </div>
@@ -169,18 +157,15 @@
                                 <div class="newsCard__info">
                                     <div class="newsCard__date">{{ $exPost->date_formatted }}</div>
                                     <div class="newsCard__category">{{ $exPost->category->name_rus }}</div>
-                                    {{--<div class="newsCard__comment">
-                                        <svg class="icon icon-comment newsCard__commentIcon">
-                                            <use xlink:href="./images/sprite.svg#comment"></use>
-                                        </svg>
-                                        <div class="newsCard__commentSize">12</div>
-                                    </div>--}}
+
+                                    @include("includes.comments.newscard-comment", ['post' => $exPost])
+
                                 </div>
                                 <div class="newsCard__text">{{ $exPost->descr }}</div>
                                 <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="{{ route('post-show', [$exPost->category->name, $exPost->slug]) }}">Читать полностью </a>
                                     <div class="newsCard__timeRead">
                                         <svg class="icon icon-time newsCard__timeReadIcon">
-                                            <use xlink:href="./images/sprite.svg#time"></use>
+                                            <use xlink:href="/images/sprite.svg#time"></use>
                                         </svg>
                                         <div class="newsCard__timeReadText">Время на прочтение {{ $exPost->read_time }} мин.</div>
                                     </div>
@@ -195,12 +180,12 @@
                     <div class="newsSwiper swiper-container">
                         <div class="newsSwiper__prev newsSwiper__navigation">
                             <svg class="icon icon-arrow-left ">
-                                <use xlink:href="./images/sprite.svg#arrow-left"></use>
+                                <use xlink:href="/images/sprite.svg#arrow-left"></use>
                             </svg>
                         </div>
                         <div class="newsSwiper__next newsSwiper__navigation">
                             <svg class="icon icon-arrow-right ">
-                                <use xlink:href="./images/sprite.svg#arrow-right"></use>
+                                <use xlink:href="/images/sprite.svg#arrow-right"></use>
                             </svg>
                         </div>
                         <div class="swiper-wrapper">
@@ -212,12 +197,9 @@
                                     <div class="cardFill newsSwiper__slide swiper-slide"><a class="cardFill__link" href="{{ route('post-show', [$slPost->category->name, $slPost->slug]) }}"> <img class="cardFill__image" src="/{{ $slPost->image }}" alt=""/>
                                             <div class="cardFill__frame">
                                                 <div class="cardFill__top">
-                                                    {{--<div class="cardFill__comment">
-                                                        <svg class="icon icon-comment cardFill__commentIcon">
-                                                            <use xlink:href="./images/sprite.svg#comment"></use>
-                                                        </svg>
-                                                        <div class="cardFill__commentSize">12</div>
-                                                    </div>--}}
+
+                                                    @include("includes.comments.cardfill-comment", ['post' => $slPost])
+
                                                 </div>
                                                 <div class="cardFill__bottom">
                                                     <div class="cardFill__date"> {{ trans_choice("main.hours_number", $carbon::now()->copy()->diffInHours($slPost->date_time)) }} назад &bull; {{ $slPost->category->name_rus }}
@@ -235,7 +217,22 @@
                     </div>
                 </div>
             </div>
-            @include("includes.home-category-menu")
+
+            <aside class="sidebar">
+
+                @include("includes.menus.currency-wiget")
+
+                @include("includes.menus.pizza-day")
+
+                @include("includes.menus.telegram")
+
+                @include("includes.menus.comments", [
+                    'title' => "Последние комментарии",
+                    'comments4menu' => $comments4menu
+                ])
+
+            </aside>
+
         </div>
         <div class="module module--big-space">
             <h2 class="h2 module__title">Образование</h2>
@@ -249,17 +246,14 @@
                             <div class="newsCard__info">
                                 <div class="newsCard__date">{{ $eduPost->date_formatted }}</div>
                                 <div class="newsCard__category">{{ $eduPost->category->name_rus }}</div>
-                                {{--<div class="newsCard__comment">
-                                    <svg class="icon icon-comment newsCard__commentIcon">
-                                        <use xlink:href="./images/sprite.svg#comment"></use>
-                                    </svg>
-                                    <div class="newsCard__commentSize">25</div>
-                                </div>--}}
+
+                                @include("includes.comments.newscard-comment", ['post' => $eduPost])
+
                             </div>
                             <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="{{ route('post-show', [$eduPost->category->name, $eduPost->slug]) }}">Читать полностью </a>
                                 <div class="newsCard__timeRead">
                                     <svg class="icon icon-time newsCard__timeReadIcon">
-                                        <use xlink:href="./images/sprite.svg#time"></use>
+                                        <use xlink:href="/images/sprite.svg#time"></use>
                                     </svg>
                                     <div class="newsCard__timeReadText">Время на прочтение {{ $eduPost->read_time }} мин.</div>
                                 </div>
@@ -274,7 +268,7 @@
             </div>
             <div class="module__more"> <a class="module__more-link" href="{{ route("cat-index", ['education']) }}">Перейти в рубрику
                     <svg class="icon icon-rarr ">
-                        <use xlink:href="./images/sprite.svg#rarr"></use>
+                        <use xlink:href="/images/sprite.svg#rarr"></use>
                     </svg></a></div>
         </div>
     </div>
@@ -282,17 +276,17 @@
     <div class="gray-bg module module--big-space">
         <div class="container">
             <div class="youtube module">
-                <div class="youtube__header"> <img class="youtube__headerIcon" src="./images/youtube/youtube.svg" alt="">
+                <div class="youtube__header"> <img class="youtube__headerIcon" src="/images/youtube/youtube.svg" alt="">
                     <div class="youtube__title">Наш YouTube канал</div><a class="btn btn--white youtube__channel" href="https://www.youtube.com/c/cartons" target="_blank">Перейти на канал</a>
                     <div class="youtube__navigation">
                         <div class="youtube__nav youtube__nav--prev">
                             <svg class="icon icon-prev ">
-                                <use xlink:href="./images/sprite.svg#prev"></use>
+                                <use xlink:href="/images/sprite.svg#prev"></use>
                             </svg>
                         </div>
                         <div class="youtube__nav youtube__nav--next">
                             <svg class="icon icon-next ">
-                                <use xlink:href="./images/sprite.svg#next"></use>
+                                <use xlink:href="/images/sprite.svg#next"></use>
                             </svg>
                         </div>
                     </div>
@@ -308,7 +302,7 @@
                                         <div class="play">
                                             <div class="play__icon">
                                                 <svg class="icon icon-play ">
-                                                    <use xlink:href="./images/sprite.svg#play"></use>
+                                                    <use xlink:href="/images/sprite.svg#play"></use>
                                                 </svg>
                                             </div>
                                             <div class="play__text">Посмотреть<br>на YouTube</div>
@@ -333,18 +327,15 @@
                             <div class="newsCard__info">
                                 <div class="newsCard__date">{{ $vPost->date_formatted }}</div>
                                 <div class="newsCard__category">{{ $vPost->category->name_rus }}</div>
-                                {{--<div class="newsCard__comment">
-                                    <svg class="icon icon-comment newsCard__commentIcon">
-                                        <use xlink:href="./images/sprite.svg#comment"></use>
-                                    </svg>
-                                    <div class="newsCard__commentSize">25</div>
-                                </div>--}}
+
+                                @include("includes.comments.newscard-comment", ['post' => $vPost])
+
                             </div>
                             <div class="newsCard__text">{{ $vPost->descr }}</div>
                             <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="{{ route('post-show', [$vPost->category->name, $vPost->slug]) }}">Читать полностью </a>
                                 <div class="newsCard__timeRead">
                                     <svg class="icon icon-time newsCard__timeReadIcon">
-                                        <use xlink:href="./images/sprite.svg#time"></use>
+                                        <use xlink:href="/images/sprite.svg#time"></use>
                                     </svg>
                                     <div class="newsCard__timeReadText">Время на прочтение {{ $vPost->read_time }} мин.</div>
                                 </div>
@@ -358,7 +349,7 @@
                     <form action="" id="home_subs_form">
                         <div class="subscribe__row">
                             <div class="subscribe__content">
-                                <div class="subscribe__icon"><img src="./images/subscribe/subscribe.svg" alt=""></div>
+                                <div class="subscribe__icon"><img src="/images/subscribe/subscribe.svg" alt=""></div>
                                 <div class="column">
                                     <div class="subscribe__title">Будьте в курсе последних событий криптоиндустрии</div>
                                     <div class="subscribe__text">Каждую неделю все самое важное у вас на почте</div>
@@ -368,7 +359,7 @@
                                 <div class="subscribe__field">
                                     <div class="input-form with-icon">
                                         <svg class="icon icon-mail input-form__icon">
-                                            <use xlink:href="./images/sprite.svg#mail"></use>
+                                            <use xlink:href="/images/sprite.svg#mail"></use>
                                         </svg>
                                         <input
                                             id="home_subs_input"
@@ -402,11 +393,9 @@
     </div>
 
 
-
-
     <div class="container">
         <div class="tgLine module--big-space">
-            <div class="tgLine__header"><img class="tgLine__headerIcon" src="./images/tgLine/tg.svg" alt="">
+            <div class="tgLine__header"><img class="tgLine__headerIcon" src="/images/tgLine/tg.svg" alt="">
                 <div class="tgLine__headerText">Новости крипторынка у вас в телефоне</div>
             </div>
             <div class="tgLine__content">Еще больше интересного в Telegram-канале. Только актуальные и важные новости и события.</div><a class="btn btn--black tgLine__button" href="https://t.me/SIGEN_Media" target="_blank">Перейти в канал </a>

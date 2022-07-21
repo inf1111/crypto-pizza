@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/zzz', function () {
 
-
-
+    $post = \App\Post::where('slug', 'mark-karpeles-vzlet-i-padenie-glavy-mt-gox')->first();
+    dd($post->isHot);
 
 });
 
@@ -37,6 +37,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/profile', [ProfileController::class, 'index'])->name("profile-index");
     Route::get('/profile/bookmarks', [ProfileController::class, 'bookmarksIndex'])->name("profile-bookmarks");
+    Route::get('/profile/comments', [ProfileController::class, 'commentsIndex'])->name("profile-comments");
     Route::get('/profile/logout', [AuthController::class, 'logout'])->name("logout");
     Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name("profile-update");
 

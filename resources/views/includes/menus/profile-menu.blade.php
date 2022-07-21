@@ -4,11 +4,11 @@
           <svg class="icon icon-user ">
             <use xlink:href="/images/sprite.svg#user"></use>
           </svg></span><span class="profile-menu__text">мой профиль </span></a></li>
-        {{--<li class="profile-menu__item"> <a class="profile-menu__link" href="/profile-comments.html"><span class="profile-menu__icon">
+        <li class="profile-menu__item"> <a class="profile-menu__link {{ Route::is('profile-comments') ? 'is-active' : '' }}" href="{{ route("profile-comments") }}"><span class="profile-menu__icon">
           <svg class="icon icon-chat ">
             <use xlink:href="/images/sprite.svg#chat"></use>
-          </svg></span><span class="profile-menu__text">мои комментарии<sup>176</sup></span></a></li>
-        <li class="profile-menu__item"> <a class="profile-menu__link" href="/profile-notify.html"><span class="profile-menu__icon">
+          </svg></span><span class="profile-menu__text">мои комментарии<sup>{{ Auth::user()->comments->count() }}</sup></span></a></li>
+        {{--<li class="profile-menu__item"> <a class="profile-menu__link" href="/profile-notify.html"><span class="profile-menu__icon">
           <svg class="icon icon-notify ">
             <use xlink:href="/images/sprite.svg#notify"></use>
           </svg><span>12</span></span><span class="profile-menu__text">оповещения</span></a></li>--}}

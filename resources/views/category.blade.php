@@ -20,12 +20,9 @@
                         <div class="cardFill themeOfTheDay"><a class="cardFill__link" href="{{ route('post-show', [$category->name, $posts[0]->slug]) }}"> <img class="cardFill__image" src="/{{ $posts[0]->image }}" alt=""/>
                                 <div class="cardFill__frame">
                                     <div class="cardFill__top">
-                                        {{--<div class="cardFill__comment hot">
-                                            <svg class="icon icon-fire cardFill__commentIcon">
-                                                <use xlink:href="/images/sprite.svg#fire"></use>
-                                            </svg>
-                                            <div class="cardFill__commentSize">154</div>
-                                        </div>--}}
+
+                                        @include("includes.comments.cardfill-comment", ['post' => $posts[0]])
+
                                     </div>
                                     <div class="cardFill__bottom">
                                         <div class="cardFill__date"> {{ $posts[0]->date_formatted }} &bull; {{ $carbon::parse($posts[0]->date_time)->format('H:i') }} &bull; {{ $posts[0]->category->name_rus }}
@@ -42,12 +39,9 @@
                         <div class="cardFill editorChoice"><a class="cardFill__link" href="{{ route('post-show', [$category->name, $posts[1]->slug]) }}"> <img class="cardFill__image" src="/{{ $posts[1]->image }}" alt=""/>
                                 <div class="cardFill__frame">
                                     <div class="cardFill__top">
-                                        {{--<div class="cardFill__comment">
-                                            <svg class="icon icon-comment cardFill__commentIcon">
-                                                <use xlink:href="/images/sprite.svg#comment"></use>
-                                            </svg>
-                                            <div class="cardFill__commentSize">12</div>
-                                        </div>--}}
+
+                                        @include("includes.comments.cardfill-comment", ['post' => $posts[1]])
+
                                     </div>
                                     <div class="cardFill__bottom">
                                         <div class="cardFill__date"> {{ trans_choice("main.hours_number", $carbon::now()->copy()->diffInHours($posts[1]->date_time)) }} назад &bull; {{ $posts[0]->category->name_rus }}
@@ -72,12 +66,9 @@
                                     <div class="newsCard__info">
                                         <div class="newsCard__date">{{ $post->date_formatted }}</div>
                                         <div class="newsCard__category">{{ $post->category->name_rus }}</div>
-                                        {{--<div class="newsCard__comment">
-                                            <svg class="icon icon-comment newsCard__commentIcon">
-                                                <use xlink:href="/images/sprite.svg#comment"></use>
-                                            </svg>
-                                            <div class="newsCard__commentSize">25</div>
-                                        </div>--}}
+
+                                        @include("includes.comments.newscard-comment", ['post' => $post])
+
                                     </div>
                                     <div class="newsCard__text">{{ $post->descr }}</div>
                                     <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="{{ route('post-show', [$category->name, $post->slug]) }}">Читать полностью </a>
@@ -102,7 +93,22 @@
                 {{ $posts->links("paging") }}
 
             </div>
-            @include("includes.home-category-menu")
+
+            <aside class="sidebar">
+
+                @include("includes.menus.currency-wiget")
+
+                @include("includes.menus.pizza-day")
+
+                @include("includes.menus.telegram")
+
+                @include("includes.menus.comments", [
+                    'title' => "В этой рубрике обсуждают:",
+                    'comments4menu' => $comments4menu
+                ])
+
+            </aside>
+
         </div>
     </div>
 

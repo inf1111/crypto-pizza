@@ -1,3 +1,9 @@
+// комментарии
+
+$(".replyLink").on("click", function(){
+    var commentId = $(this).attr("data-commentId");
+    $("#parentIdInput").val(commentId);
+});
 
 // формы поиска (декстоп и мобайл)
 

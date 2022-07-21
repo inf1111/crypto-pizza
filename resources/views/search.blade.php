@@ -79,7 +79,15 @@
 
             </div>
 
-            @include("includes.post-search-menu")
+            <aside class="sidebar">
+
+                @include("includes.menus.currency-wiget")
+
+                @include("includes.menus.telegram")
+
+                @include("includes.menus.youtube")
+
+            </aside>
 
         </div>
     </div>

@@ -12,7 +12,7 @@
 
     <div class="container">
         <div class="breadcrumbs">
-            <div class="breadcrumbs__item"> <a href="">Главная     </a></div>
+            <div class="breadcrumbs__item"> <a href="{{ route("home") }}">Главная</a></div>
             <div class="breadcrumbs__separator">—</div>
             <div class="breadcrumbs__item"><span>Страница не найдена</span></div>
         </div>

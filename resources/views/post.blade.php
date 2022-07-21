@@ -124,11 +124,11 @@
                         <div class="post-list__title">Статьи по теме</div>
                         <div class="post-list__list">
 
-                            @foreach($postsOnTopic as $post)
+                            @foreach($postsOnTopic as $tpost)
 
                                 <div class="post-list__item">
-                                    <div class="post-list__date">{{ $carbon::parse($post->date_time)->format('d.m.Y') }}</div>
-                                    <div class="post-list__name"> <a class="post-list__link" href="{{ route('post-show', [$post->category->name, $post->slug]) }}">{{ $post->title }}</a></div>
+                                    <div class="post-list__date">{{ $carbon::parse($tpost->date_time)->format('d.m.Y') }}</div>
+                                    <div class="post-list__name"> <a class="post-list__link" href="{{ route('post-show', [$tpost->category->name, $tpost->slug]) }}">{{ $tpost->title }}</a></div>
                                     {{--<div class="post-list__comment">
                                         <svg class="icon icon-comment ">
                                             <use xlink:href="/images/sprite.svg#comment"></use>
@@ -145,9 +145,9 @@
                 @endisset
 
                 <div class="post-comment module">
-                    <div class="post-comment__title">Комментарии: <sup>{{ $post->comments()->count() }}</sup></div>
+                    <div class="post-comment__title" id="commentsAnchor">Комментарии: <sup>{{ $post->allComments()->count() }}</sup></div>
 
-                    @if($post->comments()->count() === 0)
+                    @if($post->parentComments()->count() === 0)
 
                         <div class="post-comment__auth"><img class="post-comment__pizza" src="/images/pizza.webp" alt="">
                             <div class="post-comment__description">Комментариев еще нет. Вы можете оставить первый.</div>
@@ -155,22 +155,22 @@
 
                     @else
 
-                        @foreach($post->comments as $cmnt)
+                        @foreach($post->parentComments as $parentComment)
 
                             <div class="comment">
                                 <div class="comment__header">
-                                    <div class="comment__avatar @if($cmnt->user->isOnline) online @endif">
+                                    <div class="comment__avatar @if($parentComment->user->isOnline) online @endif">
                                         <img src="
-                                            @if(is_null($cmnt->user->avatar))
+                                            @if(is_null($parentComment->user->avatar))
                                                 /images/anon.png
                                             @else
-                                                /{{ $cmnt->user->avatar }}
+                                                /{{ $parentComment->user->avatar }}
                                             @endif
                                         "/>
                                     </div>
-                                    <div class="comment__author">{{ $cmnt->user->NameForComments }}</div>
+                                    <div class="comment__author">{{ $parentComment->user->NameForComments }}</div>
                                     <div class="comment__bull"></div>
-                                    <div class="comment__time">{{ $carbon::parse($cmnt->created_at)->format('d.m.Y H:i') }}</div>
+                                    <div class="comment__time">{{ $carbon::parse($parentComment->created_at)->format('d.m.Y H:i') }}</div>
                                     {{--<div class="comment__liked">
                                         <svg class="icon icon-like is-active">
                                             <use xlink:href="/images/sprite.svg#like"></use>
@@ -181,21 +181,25 @@
                                         </svg>
                                     </div>--}}
                                 </div>
-                                <div class="comment__body">{{ $cmnt->text }}</div>
+                                <div class="comment__body">{{ $parentComment->text }}</div>
                                 <div class="comment__footer">
 
                                     @auth
 
-                                        <div class="comment__reply">
-                                            <svg class="icon icon-reply ">
-                                                <use xlink:href="/images/sprite.svg#reply"></use>
-                                            </svg>Ответить
-                                        </div>
+                                        <a href="#writeCommentAnchor" class="replyLink" data-commentId="{{ $parentComment->id }}">
+                                            <div class="comment__reply">
+                                                <svg class="icon icon-reply ">
+                                                    <use xlink:href="/images/sprite.svg#reply"></use>
+                                                </svg>Ответить
+                                            </div>
+                                        </a>
 
                                     @endauth
 
                                 </div>
                             </div>
+
+                            @include('includes.replies', ['replies' => $parentComment->replies])
 
                         @endforeach
 
@@ -219,10 +223,10 @@
                     @auth
 
                         <div class="post-comment__write">
-                            <h3 class="post-comment__write-title">Оставить комментарий:</h3>
+                            <h3 id="writeCommentAnchor" class="post-comment__write-title">Оставить комментарий:</h3>
                             <form action="{{ route("comment-store") }}" method="POST">
                                 <input type="hidden" name="post_id" value="{{ $post->id }}">
-                                <input type="hidden" name="parent_id" value="0">
+                                <input type="hidden" name="parent_id" id="parentIdInput" value="0">
                                 <div class="post-comment__write-box">
                                     <textarea class="textarea" name="text" placeholder="Введите текст комментария" minlength="3" maxlength="255" required oninvalid="this.setCustomValidity('Длина комментария - от 3 до 255 символов')" oninput="this.setCustomValidity('')"></textarea>
                                     <div class="post-comment__write-actions">
@@ -246,29 +250,35 @@
                 </div>
             </div>
 
-            @include("includes.post-search-menu")
+            <aside class="sidebar">
+
+                @include("includes.menus.currency-wiget")
+
+                @include("includes.menus.telegram")
+
+                @include("includes.menus.youtube")
+
+            </aside>
 
         </div>
         <div class="module module--big-space">
             <h2 class="h2 module__title">Возможно вы пропустили:</h2>
             <div class="four-columns module">
 
-                @foreach($missedPosts as $post)
+                @foreach($missedPosts as $mpost)
 
-                    <div class="newsCard"><a class="newsCard__image" href="{{ route('post-show', [$post->category->name, $post->slug]) }}"><img src="/{{ $post->image }}" alt=""/></a>
+                    <div class="newsCard"><a class="newsCard__image" href="{{ route('post-show', [$mpost->category->name, $mpost->slug]) }}"><img src="/{{ $mpost->image }}" alt=""/></a>
                         <div class="newsCard__content">
-                            <div class="newsCard__title"><a href="{{ route('post-show', [$post->category->name, $post->slug]) }}">{{ $post->title }}</a></div>
+                            <div class="newsCard__title"><a href="{{ route('post-show', [$mpost->category->name, $mpost->slug]) }}">{{ $mpost->title }}</a></div>
                             <div class="newsCard__info">
-                                <div class="newsCard__date">{{ $post->date_formatted }}</div>
-                                <div class="newsCard__category">{{ $post->category->name_rus }}</div>
-                                {{--<div class="newsCard__comment">
-                                    <svg class="icon icon-comment newsCard__commentIcon">
-                                        <use xlink:href="/images/sprite.svg#comment"></use>
-                                    </svg>
-                                    <div class="newsCard__commentSize">25</div>
-                                </div>--}}
+                                <div class="newsCard__date">{{ $mpost->date_formatted }}</div>
+                                <div class="newsCard__category">{{ $mpost->category->name_rus }}</div>
+
+                                @include("includes.comments.newscard-comment", ['post' => $mpost])
+
                             </div>
-                            <div class="newsCard__footer"> <a class="btn btn--white newsCard__button" href="{{ route('post-show', [$post->category->name, $post->slug]) }}">Читать полностью </a>
+                            <div class="newsCard__footer">
+                                <a class="btn btn--white newsCard__button" href="{{ route('post-show', [$mpost->category->name, $mpost->slug]) }}">Читать полностью </a>
                             </div>
                         </div>
                     </div>

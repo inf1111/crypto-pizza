@@ -26,30 +26,45 @@ class Post extends Model
         });
     }
 
-    public function category() {
+    public function category()
+    {
         return $this->belongsTo('App\Category');
     }
 
-    public function comments() {
+    public function parentComments()
+    {
+        return $this->hasMany('App\Comment')->where('parent_id', 0);
+    }
+
+    public function allComments()
+    {
         return $this->hasMany('App\Comment');
     }
 
     public function getDateFormattedAttribute($value)
     {
         $date = Carbon::parse($this->date_time);
+
         $date->locale('ru');
+
         return $date->isoFormat('D MMMM YYYY', 'Do MMMM');
     }
 
-    public function getBookmarkedAttribute() {
-
+    public function getBookmarkedAttribute()
+    {
         return (Bookmark::where('user_id', Auth::user()->id)->where('post_id', $this->id)->exists()) ? true : false;
-
     }
 
-    public function getLikedAttribute() {
-
+    public function getLikedAttribute()
+    {
         return (LikeP::where('user_id', Auth::user()->id)->where('post_id', $this->id)->exists()) ? true : false;
-
     }
+
+    public function getIsHotAttribute()
+    {
+        $recentCommCount = $this->allComments()->where('created_at', '>=', Carbon::now()->subDay()->toDateTimeString())->count();
+
+        return ($recentCommCount >= 5) ? true : false;
+    }
+
 }

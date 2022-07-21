@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Bookmark;
 use App\Category;
+use App\Comment;
 use App\LikeP;
 use App\Option;
 use App\Post;
@@ -85,6 +86,7 @@ class PostController extends Controller
         $exclPosts = Post::whereNotIn('category_id', [1,8])->orderBy('date_time', 'desc')->take(4)->get();
         $youTubeLinks = YoutubeLink::orderBy('date_time', 'desc')->take(10)->get();
         $recentNews = Post::whereIn('category_id', [1,8])->orderBy('date_time', 'desc')->take(10)->get();
+        $comments4menu = Comment::orderBy('created_at', 'desc')->take(5)->get();
 
         // get most viewed posts
 
@@ -113,6 +115,7 @@ class PostController extends Controller
             "recentNews" => $recentNews,
             "mostViewedPosts" => $mostViewedPosts,
             "missedPosts" => $this->getMissedPosts(),
+            "comments4menu" => $comments4menu
         ]);
     }
 
@@ -122,14 +125,21 @@ class PostController extends Controller
 
         $posts = Post::where('category_id', $category->id)->orderBy('date_time', 'desc')->paginate(10);
 
+        $comments4menu = $category->comments->take(5);
+
         return view("category", [
             'category' => $category,
-            'posts' => $posts
+            'posts' => $posts,
+            "comments4menu" => $comments4menu
         ]);
     }
 
     public function show($category, $slug)
     {
+        if (Auth::user()) {
+            Auth::user()->checkin();
+        }
+
         $category = Category::where('name', $category)->firstOrFail();
 
         $post = Post::where('category_id', $category->id)->where('slug', $slug)->firstOrFail();
